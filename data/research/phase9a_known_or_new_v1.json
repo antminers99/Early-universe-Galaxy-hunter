@@ -1,0 +1,66 @@
+{
+  "phase": "Phase 9A \u2014 Known or New",
+  "method": "SIMBAD cone search (3 arcsec radius)",
+  "results": {
+    "1203011": {
+      "our_z": 8.24,
+      "simbad_match": "GOODS J123739.50+621558.6",
+      "separation": "0.13 arcsec",
+      "simbad_type": "QSO (Quasi-Stellar Object)",
+      "simbad_z": "2.98 (spectroscopic!)",
+      "simbad_z_ref": "2016MNRAS.456.2105D",
+      "other_ids": "[SWM2014] GOODS-N 25352, [O2018] J123739.5+621558, MODS wide 11414",
+      "n_papers": 7,
+      "assessment": "CRITICAL: Spectroscopic z=2.98 QSO at 0.13\" separation. Our photo-z=8.24 is WRONG. This is a known z~3 quasar, not a z~8 galaxy.",
+      "verdict": "KNOWN \u2014 z=2.98 QSO (spectroscopically confirmed)"
+    },
+    "1030374": {
+      "our_z": 11.9,
+      "simbad_match": "AzGN 31 (submillimeter galaxy)",
+      "separation": "0.35 arcsec",
+      "simbad_type": "rG (radio galaxy)",
+      "simbad_z": "5.818 (photometric estimate)",
+      "simbad_z_ref": "2009A&A...500..705M",
+      "other_ids": "[PBS2005] GN09, SMM J123622+621617, GOODS 850-2, AzGN 31, [BCC2014] CDFN 21",
+      "n_papers": 16,
+      "also_nearby": "JADES-GN NC 1013604 (EmG) at 2.02\", [SWM2014] GOODS-N 26476 at 2.22\"",
+      "assessment": "KNOWN submillimeter galaxy with 16 papers. Photo-z=5.818 from literature. Our z=11.9 estimate disagrees strongly. Likely a dusty galaxy at z~5-6, not z~12. Dust reddening mimics high-z dropout.",
+      "verdict": "KNOWN \u2014 AzGN 31, z~5.8 SMG (well-studied, 16 papers)"
+    },
+    "1125125": {
+      "our_z": 11.88,
+      "simbad_match": "GOODS J123728.08+621920.2",
+      "separation": "0.25 arcsec",
+      "simbad_type": "rG (radio galaxy)",
+      "simbad_z": "7.960 (photometric estimate)",
+      "simbad_z_ref": "2009A&A...500..705M",
+      "other_ids": "[SWM2014] GOODS-N 34783, SMM J123728+621920, MODS wide 10441",
+      "n_papers": 8,
+      "also_nearby": "MODS wide 10331 at 1.35\"",
+      "assessment": "KNOWN radio galaxy with 8 papers. Photo-z=7.96 from literature (vs our z=11.88). Some agreement on high-z nature but our z is much higher. Also radio-detected = possible AGN contamination.",
+      "verdict": "KNOWN \u2014 radio galaxy, z~8 (photometric), 8 papers"
+    }
+  },
+  "conclusion": "All three top candidates are known objects with existing SIMBAD entries and literature. None are new discoveries. Two have spectroscopic/photometric redshifts significantly different from our estimates.",
+  "nuanced_assessment": {
+    "1203011": {
+      "simbad_z_quality": "D (spectroscopic \u2014 DEFINITIVE)",
+      "verdict": "KILLED \u2014 spectroscopic z=2.98 QSO",
+      "our_photoz_status": "catastrophic failure (8.24 vs 2.98)",
+      "explanation": "QSO SED can mimic Lyman break at z~8. Known problem in photometric surveys."
+    },
+    "1030374": {
+      "simbad_z_quality": "E (photometric \u2014 UNCERTAIN)",
+      "verdict": "KNOWN \u2014 AzGN 31, dusty SMG, likely z~5-6",
+      "our_photoz_status": "likely wrong (11.9 vs 5.8) \u2014 dust mimics dropout",
+      "explanation": "Submillimeter galaxy = dusty. Dust reddening mimics Lyman break dropout. 16 papers."
+    },
+    "1125125": {
+      "simbad_z_quality": "E (photometric \u2014 UNCERTAIN)",
+      "verdict": "KNOWN \u2014 radio galaxy, z~8 photometric",
+      "our_photoz_status": "disagrees (11.88 vs 7.96) \u2014 but both photometric",
+      "explanation": "Radio-detected at z~8 would be very unusual. Already studied in 8 papers. Not new."
+    }
+  },
+  "bottom_line": "All three top candidates are known objects in astronomical databases. None qualify as new discoveries. The systematic kill pipeline (Phase 9) successfully prevented false discovery claims."
+}
