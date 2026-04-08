@@ -1,0 +1,7 @@
+rank,field,id,z,f444w_nJy,fwhm_psf,visual_verdict,note
+1,GOODS-N,1030374,11.9,5991,4.4,PASS,"Clearly extended in F356W/F444W, clean dropout (F090W/F115W absent), strong red-channel detection, isolated (NN=18.4""), elongated 1.5:1 — convincing high-z candidate."
+2,GOODS-S,428330,11.6,4878,4.86,PASS,"Very extended and elongated (2.6:1), bright in F277W-F444W, clean dropout, NN=2.03"" but clearly separated — morphology suggests real galaxy, not artifact."
+4,GOODS-S,219426,8.3,6137,4.2,PASS,"Clearly extended (4.2× PSF), bright and round. F090W=5.9 SNR is marginal for z=8.3 dropout but acceptable (Ly-alpha break partial at z~8). Strong F150W-F444W detection. Isolated (5.3"")."
+5,GOODS-N,1203011,8.2,5934,4.79,PASS,"Very extended (4.8× PSF), elongated 2:1, clean dropout (F090W absent), strong multi-band detection F150W-F444W, very isolated (15.3"") — textbook high-z galaxy morphology."
+7,GOODS-S,431625,11.7,4262,3.24,PASS,"Extended in F277W-F444W, clean dropout (F090W/F115W absent), round/symmetric morphology, isolated (6.6""), red_1=1.14 — consistent with z~12 galaxy."
+9,GOODS-N,1125125,11.9,3834,3.82,PASS,"Clearly extended, elongated 1.5:1, clean dropout (F090W/F115W absent), strong F277W-F444W detection, isolated (8.7"") — morphology and photometry consistent with z~12."

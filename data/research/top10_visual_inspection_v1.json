@@ -1,0 +1,102 @@
+[
+  {
+    "rank": 1,
+    "field": "GOODS-N",
+    "id": "1030374",
+    "z": 11.9,
+    "f444w_nJy": 5991,
+    "fwhm_psf": 4.4,
+    "visual_verdict": "PASS",
+    "note": "Clearly extended in F356W/F444W, clean dropout (F090W/F115W absent), strong red-channel detection, isolated (NN=18.4\"), elongated 1.5:1 \u2014 convincing high-z candidate."
+  },
+  {
+    "rank": 2,
+    "field": "GOODS-S",
+    "id": "428330",
+    "z": 11.6,
+    "f444w_nJy": 4878,
+    "fwhm_psf": 4.86,
+    "visual_verdict": "PASS",
+    "note": "Very extended and elongated (2.6:1), bright in F277W-F444W, clean dropout, NN=2.03\" but clearly separated \u2014 morphology suggests real galaxy, not artifact."
+  },
+  {
+    "rank": 3,
+    "field": "GOODS-S",
+    "id": "402176",
+    "z": 12.7,
+    "f444w_nJy": 4776,
+    "fwhm_psf": 2.69,
+    "visual_verdict": "MAYBE",
+    "note": "CONCERN: F115W=20, F150W=26 SNR at z=12.7 \u2014 these should be dropouts. F444W SNR=1829 is unusually high. Likely a bright low-z interloper with wrong photo-z, not a real z~13 galaxy. Round morphology. Needs z-check."
+  },
+  {
+    "rank": 4,
+    "field": "GOODS-S",
+    "id": "219426",
+    "z": 8.3,
+    "f444w_nJy": 6137,
+    "fwhm_psf": 4.2,
+    "visual_verdict": "PASS",
+    "note": "Clearly extended (4.2\u00d7 PSF), bright and round. F090W=5.9 SNR is marginal for z=8.3 dropout but acceptable (Ly-alpha break partial at z~8). Strong F150W-F444W detection. Isolated (5.3\")."
+  },
+  {
+    "rank": 5,
+    "field": "GOODS-N",
+    "id": "1203011",
+    "z": 8.2,
+    "f444w_nJy": 5934,
+    "fwhm_psf": 4.79,
+    "visual_verdict": "PASS",
+    "note": "Very extended (4.8\u00d7 PSF), elongated 2:1, clean dropout (F090W absent), strong multi-band detection F150W-F444W, very isolated (15.3\") \u2014 textbook high-z galaxy morphology."
+  },
+  {
+    "rank": 6,
+    "field": "GOODS-N",
+    "id": "1027338",
+    "z": 12.6,
+    "f444w_nJy": 3457,
+    "fwhm_psf": 4.29,
+    "visual_verdict": "MAYBE",
+    "note": "Extended and elongated 2:1, but F115W=3.7 SNR at z=12.6 is a weak blue detection concern. Bright in F356W/F444W. Isolated (15.8\"). Needs careful z-check \u2014 could survive if F115W is noise."
+  },
+  {
+    "rank": 7,
+    "field": "GOODS-S",
+    "id": "431625",
+    "z": 11.7,
+    "f444w_nJy": 4262,
+    "fwhm_psf": 3.24,
+    "visual_verdict": "PASS",
+    "note": "Extended in F277W-F444W, clean dropout (F090W/F115W absent), round/symmetric morphology, isolated (6.6\"), red_1=1.14 \u2014 consistent with z~12 galaxy."
+  },
+  {
+    "rank": 8,
+    "field": "GOODS-S",
+    "id": "354660",
+    "z": 12.7,
+    "f444w_nJy": 2767,
+    "fwhm_psf": 3.17,
+    "visual_verdict": "MAYBE",
+    "note": "CONCERN: F150W=8.0 SNR at z=12.7 \u2014 should be dropout. Extended and round, very red (red_1=1.30). NN=1.85\" is close. Possible blending or wrong photo-z. Needs z-check before promotion."
+  },
+  {
+    "rank": 9,
+    "field": "GOODS-N",
+    "id": "1125125",
+    "z": 11.9,
+    "f444w_nJy": 3834,
+    "fwhm_psf": 3.82,
+    "visual_verdict": "PASS",
+    "note": "Clearly extended, elongated 1.5:1, clean dropout (F090W/F115W absent), strong F277W-F444W detection, isolated (8.7\") \u2014 morphology and photometry consistent with z~12."
+  },
+  {
+    "rank": 10,
+    "field": "GOODS-S",
+    "id": "416913",
+    "z": 11.6,
+    "f444w_nJy": 7121,
+    "fwhm_psf": 3.54,
+    "visual_verdict": "MAYBE",
+    "note": "BRIGHTEST source (7121 nJy) but F115W=4.6 SNR at z=11.6 is marginal blue detection. Extended (3.5\u00d7 PSF), elongated 1.8:1. NN=1.16\" is VERY close \u2014 possible blending. Too bright for z~12? Needs z-check."
+  }
+]

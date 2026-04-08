@@ -1,0 +1,11 @@
+rank,field,id,z,f444w_nJy,fwhm_psf,visual_verdict,note
+1,GOODS-N,1030374,11.9,5991,4.4,PASS,"Clearly extended in F356W/F444W, clean dropout (F090W/F115W absent), strong red-channel detection, isolated (NN=18.4""), elongated 1.5:1 — convincing high-z candidate."
+2,GOODS-S,428330,11.6,4878,4.86,PASS,"Very extended and elongated (2.6:1), bright in F277W-F444W, clean dropout, NN=2.03"" but clearly separated — morphology suggests real galaxy, not artifact."
+3,GOODS-S,402176,12.7,4776,2.69,MAYBE,"CONCERN: F115W=20, F150W=26 SNR at z=12.7 — these should be dropouts. F444W SNR=1829 is unusually high. Likely a bright low-z interloper with wrong photo-z, not a real z~13 galaxy. Round morphology. Needs z-check."
+4,GOODS-S,219426,8.3,6137,4.2,PASS,"Clearly extended (4.2× PSF), bright and round. F090W=5.9 SNR is marginal for z=8.3 dropout but acceptable (Ly-alpha break partial at z~8). Strong F150W-F444W detection. Isolated (5.3"")."
+5,GOODS-N,1203011,8.2,5934,4.79,PASS,"Very extended (4.8× PSF), elongated 2:1, clean dropout (F090W absent), strong multi-band detection F150W-F444W, very isolated (15.3"") — textbook high-z galaxy morphology."
+6,GOODS-N,1027338,12.6,3457,4.29,MAYBE,"Extended and elongated 2:1, but F115W=3.7 SNR at z=12.6 is a weak blue detection concern. Bright in F356W/F444W. Isolated (15.8""). Needs careful z-check — could survive if F115W is noise."
+7,GOODS-S,431625,11.7,4262,3.24,PASS,"Extended in F277W-F444W, clean dropout (F090W/F115W absent), round/symmetric morphology, isolated (6.6""), red_1=1.14 — consistent with z~12 galaxy."
+8,GOODS-S,354660,12.7,2767,3.17,MAYBE,"CONCERN: F150W=8.0 SNR at z=12.7 — should be dropout. Extended and round, very red (red_1=1.30). NN=1.85"" is close. Possible blending or wrong photo-z. Needs z-check before promotion."
+9,GOODS-N,1125125,11.9,3834,3.82,PASS,"Clearly extended, elongated 1.5:1, clean dropout (F090W/F115W absent), strong F277W-F444W detection, isolated (8.7"") — morphology and photometry consistent with z~12."
+10,GOODS-S,416913,11.6,7121,3.54,MAYBE,"BRIGHTEST source (7121 nJy) but F115W=4.6 SNR at z=11.6 is marginal blue detection. Extended (3.5× PSF), elongated 1.8:1. NN=1.16"" is VERY close — possible blending. Too bright for z~12? Needs z-check."
