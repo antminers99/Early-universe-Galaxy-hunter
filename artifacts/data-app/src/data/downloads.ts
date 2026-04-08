@@ -5,6 +5,7 @@ export interface DownloadFile {
   format: string;
   url: string;
   field?: string;
+  linkType: "direct" | "landing";
 }
 
 export interface DownloadSource {
@@ -31,6 +32,7 @@ export const downloadSources: DownloadSource[] = [
         format: "FITS",
         url: "https://slate.ucsc.edu/~brant/jades-dr5/GOODS-S/hlsp/catalogs/hlsp_jades_jwst_nircam_goods-s_photometry_v5.0_catalog.fits",
         field: "GOODS-S",
+        linkType: "direct",
       },
       {
         name: "GOODS-N Photometric Catalog",
@@ -39,6 +41,7 @@ export const downloadSources: DownloadSource[] = [
         format: "FITS",
         url: "https://slate.ucsc.edu/~brant/jades-dr5/GOODS-N/hlsp/catalogs/hlsp_jades_jwst_nircam_goods-n_photometry_v5.0_catalog.fits",
         field: "GOODS-N",
+        linkType: "direct",
       },
       {
         name: "GOODS-S Growth Curve Catalog",
@@ -47,6 +50,7 @@ export const downloadSources: DownloadSource[] = [
         format: "FITS",
         url: "https://slate.ucsc.edu/~brant/jades-dr5/GOODS-S/hlsp/catalogs/hlsp_jades_jwst_nircam_goods-s_growth_v5.0_catalog.fits",
         field: "GOODS-S",
+        linkType: "direct",
       },
       {
         name: "GOODS-N Growth Curve Catalog",
@@ -55,6 +59,7 @@ export const downloadSources: DownloadSource[] = [
         format: "FITS",
         url: "https://slate.ucsc.edu/~brant/jades-dr5/GOODS-N/hlsp/catalogs/hlsp_jades_jwst_nircam_goods-n_growth_v5.0_catalog.fits",
         field: "GOODS-N",
+        linkType: "direct",
       },
     ],
   },
@@ -72,6 +77,7 @@ export const downloadSources: DownloadSource[] = [
         format: "FITS",
         url: "https://archive.stsci.edu/hlsps/ceers/ceers-full-grizli-v7.2-fix_phot_apcorr.fits",
         field: "EGS",
+        linkType: "direct",
       },
       {
         name: "CEERS MAST HLSP Page",
@@ -80,6 +86,7 @@ export const downloadSources: DownloadSource[] = [
         format: "Multiple",
         url: "https://archive.stsci.edu/hlsp/ceers",
         field: "EGS",
+        linkType: "landing",
       },
     ],
   },
@@ -97,6 +104,7 @@ export const downloadSources: DownloadSource[] = [
         format: "FITS",
         url: "https://drive.google.com/file/d/19Jd3Xg5BTrHX5icb81txSn_P0LqxmLsz/view?usp=sharing",
         field: "Abell 2744",
+        linkType: "landing",
       },
       {
         name: "Zenodo Full Dataset",
@@ -105,6 +113,7 @@ export const downloadSources: DownloadSource[] = [
         format: "Multiple",
         url: "https://zenodo.org/records/11059273",
         field: "Abell 2744",
+        linkType: "landing",
       },
       {
         name: "DR3 Page (All Files)",
@@ -113,6 +122,7 @@ export const downloadSources: DownloadSource[] = [
         format: "Multiple",
         url: "https://jwst-uncover.github.io/DR3.html",
         field: "Abell 2744",
+        linkType: "landing",
       },
     ],
   },
@@ -130,6 +140,7 @@ export const downloadSources: DownloadSource[] = [
         format: "FITS",
         url: "https://cosmos2025.iap.fr/catalog.html",
         field: "COSMOS",
+        linkType: "landing",
       },
       {
         name: "COSMOS-Web DR0.5 Mosaics",
@@ -138,6 +149,7 @@ export const downloadSources: DownloadSource[] = [
         format: "FITS",
         url: "https://exchg.calet.org/cosmosweb-public/DR0.5/",
         field: "COSMOS",
+        linkType: "landing",
       },
     ],
   },
@@ -155,6 +167,7 @@ export const downloadSources: DownloadSource[] = [
         format: "FITS",
         url: "https://archive.stsci.edu/hlsp/glass-jwst",
         field: "Abell 2744",
+        linkType: "landing",
       },
       {
         name: "Release 2: NIRSpec Spectroscopy",
@@ -163,6 +176,7 @@ export const downloadSources: DownloadSource[] = [
         format: "FITS",
         url: "https://archive.stsci.edu/hlsp/glass-jwst",
         field: "Abell 2744",
+        linkType: "landing",
       },
       {
         name: "Release 3: NIRISS WFSS",
@@ -171,6 +185,7 @@ export const downloadSources: DownloadSource[] = [
         format: "FITS",
         url: "https://archive.stsci.edu/hlsp/glass-jwst",
         field: "Abell 2744",
+        linkType: "landing",
       },
     ],
   },
@@ -188,6 +203,7 @@ export const downloadSources: DownloadSource[] = [
         format: "FITS",
         url: "https://easidr.esac.esa.int/",
         field: "EDF-N, EDF-F, EDF-S",
+        linkType: "landing",
       },
       {
         name: "NASA/IRSA Mirror",
@@ -196,6 +212,7 @@ export const downloadSources: DownloadSource[] = [
         format: "Multiple",
         url: "https://irsa.ipac.caltech.edu/data/Euclid/Q1/",
         field: "EDF-N, EDF-F, EDF-S",
+        linkType: "landing",
       },
     ],
   },
@@ -213,6 +230,7 @@ export const downloadSources: DownloadSource[] = [
         format: "FITS",
         url: "https://data.desi.lbl.gov/public/dr1/spectro/redux/iron/zcatalog/",
         field: "All-sky footprint",
+        linkType: "landing",
       },
       {
         name: "DESI DR1 Data Portal",
@@ -221,6 +239,7 @@ export const downloadSources: DownloadSource[] = [
         format: "Multiple",
         url: "https://data.desi.lbl.gov/doc/releases/dr1/",
         field: "All-sky footprint",
+        linkType: "landing",
       },
     ],
   },
@@ -238,6 +257,7 @@ export const downloadSources: DownloadSource[] = [
         format: "FITS",
         url: "https://archive.stsci.edu/prepds/hlf/",
         field: "GOODS-S, GOODS-N",
+        linkType: "landing",
       },
     ],
   },
