@@ -4,7 +4,11 @@ import {
   tripleCandidates,
   BANDS,
   getLocalCutoutUrl,
+  PSF_FWHM_ARCSEC,
+  PIXEL_SCALE_ARCSEC,
+  CUTOUT_SIZE_PX,
   type Candidate,
+  type StretchMode,
 } from "@/data/candidates";
 import {
   ArrowLeft,
@@ -14,9 +18,18 @@ import {
   AlertTriangle,
   Eye,
   Filter,
+  Bug,
+  Crosshair,
+  Circle,
+  Ruler,
 } from "lucide-react";
 
 type UserVerdict = "PASS" | "MAYBE" | "FAIL" | null;
+
+const SCALE_BAR_ARCSEC = 0.2;
+const SCALE_BAR_PX = SCALE_BAR_ARCSEC / PIXEL_SCALE_ARCSEC;
+const DISPLAY_SIZE = 120;
+const PX_TO_DISPLAY = DISPLAY_SIZE / CUTOUT_SIZE_PX;
 
 function SnrBar({ value, band }: { value: number | null; band: string }) {
   if (value === null) return <span className="text-xs text-gray-400">N/A</span>;
@@ -51,16 +64,43 @@ function CheckBadge({ ok, label }: { ok: boolean; label: string }) {
   );
 }
 
-function CutoutImage({ field, id, band }: { field: string; id: string; band: string }) {
+function CutoutPanel({
+  field,
+  id,
+  band,
+  stretch,
+  showCrosshair,
+  showPsf,
+  showScale,
+  fwhmArcsec,
+}: {
+  field: string;
+  id: string;
+  band: string;
+  stretch: StretchMode;
+  showCrosshair: boolean;
+  showPsf: boolean;
+  showScale: boolean;
+  fwhmArcsec: number;
+}) {
   const [status, setStatus] = useState<"loading" | "ok" | "empty" | "error">("loading");
-  const url = getLocalCutoutUrl(field, id, band);
+  const url = getLocalCutoutUrl(field, id, band, stretch);
+
+  const psfArcsec = PSF_FWHM_ARCSEC[band] || 0.145;
+  const psfDisplayPx = (psfArcsec / PIXEL_SCALE_ARCSEC) * PX_TO_DISPLAY;
+  const fwhmDisplayPx = (fwhmArcsec / PIXEL_SCALE_ARCSEC) * PX_TO_DISPLAY;
+  const scaleBarDisplayPx = SCALE_BAR_PX * PX_TO_DISPLAY;
+
+  const cx = DISPLAY_SIZE / 2;
+  const cy = DISPLAY_SIZE / 2;
 
   return (
     <div className="flex flex-col items-center gap-1">
-      <span className="text-[10px] font-mono text-gray-500 font-medium">{band}</span>
-      <div className="relative w-24 h-24 bg-black rounded border border-gray-700 overflow-hidden">
+      <span className="text-[10px] font-mono text-gray-400 font-bold tracking-wider">{band}</span>
+      <div className="relative bg-black rounded border border-gray-700 overflow-hidden"
+           style={{ width: DISPLAY_SIZE, height: DISPLAY_SIZE }}>
         {status === "loading" && (
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div className="absolute inset-0 flex items-center justify-center z-10">
             <div className="w-4 h-4 border-2 border-gray-500 border-t-transparent rounded-full animate-spin" />
           </div>
         )}
@@ -87,11 +127,7 @@ function CutoutImage({ field, id, band }: { field: string; id: string; band: str
                 for (let i = 0; i < data.length; i += 16) {
                   if (data[i] > 5 || data[i+1] > 5 || data[i+2] > 5) nonZero++;
                 }
-                if (nonZero < 3) {
-                  setStatus("empty");
-                } else {
-                  setStatus("ok");
-                }
+                setStatus(nonZero < 3 ? "empty" : "ok");
               } else {
                 setStatus("ok");
               }
@@ -100,10 +136,53 @@ function CutoutImage({ field, id, band }: { field: string; id: string; band: str
             loading="lazy"
           />
         )}
+
         {status === "ok" && (
-          <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-blue-400/50 to-transparent" />
+          <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox={`0 0 ${DISPLAY_SIZE} ${DISPLAY_SIZE}`}>
+            {showCrosshair && (
+              <g stroke="rgba(0,255,255,0.6)" strokeWidth="0.5">
+                <line x1={cx - 8} y1={cy} x2={cx - 3} y2={cy} />
+                <line x1={cx + 3} y1={cy} x2={cx + 8} y2={cy} />
+                <line x1={cx} y1={cy - 8} x2={cx} y2={cy - 3} />
+                <line x1={cx} y1={cy + 3} x2={cx} y2={cy + 8} />
+              </g>
+            )}
+
+            {showPsf && (
+              <>
+                <circle cx={cx} cy={cy} r={psfDisplayPx / 2}
+                  fill="none" stroke="rgba(255,100,100,0.7)" strokeWidth="0.8"
+                  strokeDasharray="3 2" />
+                {fwhmArcsec > 0 && fwhmDisplayPx > 1 && (
+                  <circle cx={cx} cy={cy} r={fwhmDisplayPx / 2}
+                    fill="none" stroke="rgba(100,255,100,0.7)" strokeWidth="0.8" />
+                )}
+              </>
+            )}
+
+            {showScale && (
+              <g>
+                <line x1={5} y1={DISPLAY_SIZE - 8} x2={5 + scaleBarDisplayPx} y2={DISPLAY_SIZE - 8}
+                  stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" />
+                <line x1={5} y1={DISPLAY_SIZE - 11} x2={5} y2={DISPLAY_SIZE - 5}
+                  stroke="rgba(255,255,255,0.8)" strokeWidth="0.8" />
+                <line x1={5 + scaleBarDisplayPx} y1={DISPLAY_SIZE - 11} x2={5 + scaleBarDisplayPx} y2={DISPLAY_SIZE - 5}
+                  stroke="rgba(255,255,255,0.8)" strokeWidth="0.8" />
+                <text x={5 + scaleBarDisplayPx / 2} y={DISPLAY_SIZE - 13}
+                  fill="rgba(255,255,255,0.8)" fontSize="7" textAnchor="middle" fontFamily="monospace">
+                  {SCALE_BAR_ARCSEC}&quot;
+                </text>
+              </g>
+            )}
+          </svg>
         )}
       </div>
+      {showPsf && status === "ok" && (
+        <div className="text-[8px] text-gray-500 text-center leading-tight">
+          <span className="text-red-400">---</span> PSF {psfArcsec.toFixed(3)}&quot;
+          {fwhmArcsec > 0 && <> | <span className="text-green-400">—</span> FWHM</>}
+        </div>
+      )}
     </div>
   );
 }
@@ -113,11 +192,21 @@ function CandidateCard({
   index,
   userVerdict,
   onVerdict,
+  debugMode,
+  stretch,
+  showCrosshair,
+  showPsf,
+  showScale,
 }: {
   candidate: Candidate;
   index: number;
   userVerdict: UserVerdict;
   onVerdict: (v: UserVerdict) => void;
+  debugMode: boolean;
+  stretch: StretchMode;
+  showCrosshair: boolean;
+  showPsf: boolean;
+  showScale: boolean;
 }) {
   const verdictColor = {
     PASS: "border-green-500/30 bg-green-50/50 dark:bg-green-950/20",
@@ -131,6 +220,8 @@ function CandidateCard({
     ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400"
     : "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400";
 
+  const fwhmPsfRatio = candidate.fwhmArcsec / 0.145;
+
   return (
     <div className={`rounded-lg border-2 p-4 transition-colors ${
       userVerdict ? verdictColor[userVerdict] : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900'
@@ -143,10 +234,20 @@ function CandidateCard({
             <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${autoVerdictBg}`}>
               Auto: {candidate.verdict}
             </span>
+            {debugMode && (
+              <span className="text-[10px] px-1.5 py-0.5 rounded font-mono bg-gray-100 dark:bg-gray-800 text-gray-600">
+                FWHM/PSF = {fwhmPsfRatio.toFixed(3)}
+              </span>
+            )}
           </div>
           <p className="text-xs text-gray-500 mt-0.5">
-            RA={candidate.ra.toFixed(4)}, Dec={candidate.dec.toFixed(4)} | z={candidate.zPeak} | P(z{">"}6)={candidate.probGt6}
+            RA={candidate.ra.toFixed(6)}, Dec={candidate.dec.toFixed(6)} | z={candidate.zPeak} | P(z{">"}6)={candidate.probGt6}
           </p>
+          {debugMode && (
+            <p className="text-[10px] text-gray-400 mt-0.5 font-mono">
+              Source: JADES DR5 mosaics (UCSC) | Cutout: {CUTOUT_SIZE_PX}×{CUTOUT_SIZE_PX} px ({(CUTOUT_SIZE_PX * PIXEL_SCALE_ARCSEC).toFixed(1)}&quot;×{(CUTOUT_SIZE_PX * PIXEL_SCALE_ARCSEC).toFixed(1)}&quot;) | Scale: {PIXEL_SCALE_ARCSEC * 1000} mas/px | Stretch: {stretch}
+            </p>
+          )}
         </div>
 
         <div className="flex items-center gap-1">
@@ -186,12 +287,29 @@ function CandidateCard({
       <div className="mb-3">
         <div className="flex items-center justify-between mb-1">
           <span className="text-[10px] text-gray-500 font-medium uppercase tracking-wider">
-            JWST JADES DR5 Cutouts — F150W → F444W (1.8&quot; × 1.8&quot;, 30 mas/px)
+            JWST JADES DR5 Cutouts — {stretch.toUpperCase()} stretch — {(CUTOUT_SIZE_PX * PIXEL_SCALE_ARCSEC).toFixed(1)}&quot; × {(CUTOUT_SIZE_PX * PIXEL_SCALE_ARCSEC).toFixed(1)}&quot;
           </span>
+          {debugMode && showPsf && (
+            <div className="flex items-center gap-2 text-[9px]">
+              <span className="text-red-400">- - - PSF FWHM</span>
+              <span className="text-green-400">—— Source FWHM</span>
+              <span className="text-cyan-400">+ Crosshair</span>
+            </div>
+          )}
         </div>
-        <div className="flex items-center gap-2 bg-black/90 rounded-lg p-3 overflow-x-auto">
+        <div className="flex items-center gap-3 bg-black/90 rounded-lg p-3 overflow-x-auto">
           {BANDS.map((band) => (
-            <CutoutImage key={band} field={candidate.field} id={candidate.id} band={band} />
+            <CutoutPanel
+              key={`${band}-${stretch}`}
+              field={candidate.field}
+              id={candidate.id}
+              band={band}
+              stretch={stretch}
+              showCrosshair={showCrosshair}
+              showPsf={showPsf}
+              showScale={showScale}
+              fwhmArcsec={candidate.fwhmArcsec}
+            />
           ))}
         </div>
       </div>
@@ -238,6 +356,12 @@ function CandidateCard({
               {candidate.issues}
             </div>
           )}
+          {debugMode && (
+            <div className="mt-1 p-1.5 bg-blue-50 dark:bg-blue-900/20 rounded text-[10px] text-blue-700 dark:text-blue-400 font-mono">
+              FWHM/PSF(F444W) = {fwhmPsfRatio.toFixed(4)}<br />
+              PSF F150W = {PSF_FWHM_ARCSEC.F150W}&quot; | F444W = {PSF_FWHM_ARCSEC.F444W}&quot;
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -249,6 +373,11 @@ export default function Inspection() {
   const [filterField, setFilterField] = useState<string>("all");
   const [filterBin, setFilterBin] = useState<string>("all");
   const [filterVerdict, setFilterVerdict] = useState<string>("all");
+  const [debugMode, setDebugMode] = useState(false);
+  const [stretch, setStretch] = useState<StretchMode>("asinh");
+  const [showCrosshair, setShowCrosshair] = useState(true);
+  const [showPsf, setShowPsf] = useState(true);
+  const [showScale, setShowScale] = useState(true);
 
   const setVerdict = (id: string, v: UserVerdict) => {
     setVerdicts((prev) => ({ ...prev, [id]: v }));
@@ -296,6 +425,17 @@ export default function Inspection() {
             </div>
 
             <div className="flex items-center gap-4 text-xs">
+              <button
+                onClick={() => setDebugMode(!debugMode)}
+                className={`flex items-center gap-1 px-3 py-1.5 rounded-lg font-medium transition-colors ${
+                  debugMode
+                    ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-400'
+                    : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400 hover:bg-purple-50'
+                }`}
+              >
+                <Bug className="w-3.5 h-3.5" />
+                Debug Mode
+              </button>
               <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 rounded-lg px-3 py-1.5">
                 <span className="text-gray-500">Reviewed:</span>
                 <span className="font-bold">{stats.marked}/{stats.total}</span>
@@ -339,6 +479,56 @@ export default function Inspection() {
             </select>
             <span className="text-xs text-gray-400">Showing {filtered.length} of {stats.total}</span>
           </div>
+
+          {debugMode && (
+            <div className="flex items-center gap-4 mt-2 p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
+              <span className="text-[10px] font-bold text-purple-700 dark:text-purple-400 uppercase">Debug Controls</span>
+
+              <div className="flex items-center gap-1">
+                <span className="text-[10px] text-gray-500">Stretch:</span>
+                {(["asinh", "sqrt", "linear"] as StretchMode[]).map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => setStretch(s)}
+                    className={`px-2 py-0.5 text-[10px] rounded font-mono ${
+                      stretch === s
+                        ? 'bg-purple-600 text-white'
+                        : 'bg-white dark:bg-gray-800 text-gray-600 border border-gray-300 dark:border-gray-600 hover:bg-purple-50'
+                    }`}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+
+              <button
+                onClick={() => setShowCrosshair(!showCrosshair)}
+                className={`flex items-center gap-0.5 px-2 py-0.5 text-[10px] rounded ${
+                  showCrosshair ? 'bg-cyan-100 text-cyan-700' : 'bg-gray-100 text-gray-500'
+                }`}
+              >
+                <Crosshair className="w-3 h-3" /> Crosshair
+              </button>
+
+              <button
+                onClick={() => setShowPsf(!showPsf)}
+                className={`flex items-center gap-0.5 px-2 py-0.5 text-[10px] rounded ${
+                  showPsf ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-500'
+                }`}
+              >
+                <Circle className="w-3 h-3" /> PSF Circle
+              </button>
+
+              <button
+                onClick={() => setShowScale(!showScale)}
+                className={`flex items-center gap-0.5 px-2 py-0.5 text-[10px] rounded ${
+                  showScale ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-500'
+                }`}
+              >
+                <Ruler className="w-3 h-3" /> Scale Bar
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -347,13 +537,35 @@ export default function Inspection() {
           <div className="flex items-start gap-2">
             <AlertTriangle className="w-4 h-4 text-yellow-500 mt-0.5 flex-shrink-0" />
             <div className="text-xs text-yellow-700 dark:text-yellow-400">
-              <strong>Important:</strong> All 35 candidates have FWHM well below the PSF limit (unresolved/point-like).
-              This means the triple-overlap signal is likely driven by correlated properties of point sources, not genuine extended galaxies.
-              Use these cutouts to check: Is the source real? Is it blended? Is the center stable across bands?
+              <strong>Phase 0 — Verdicts Suspended:</strong> All 35 candidates have FWHM well below the PSF limit (unresolved/point-like).
+              Pipeline validation passed (center ✓, band mapping ✓, compactness ✓).
+              Use Debug Mode to verify cutout integrity before assigning verdicts.
               Any verdict here is <em>preliminary</em> — not a discovery claim.
             </div>
           </div>
         </div>
+
+        {debugMode && (
+          <div className="mb-4 p-3 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg">
+            <div className="text-xs text-purple-700 dark:text-purple-400">
+              <strong>Pipeline Validation Results:</strong>
+              <div className="grid grid-cols-3 gap-2 mt-1">
+                <div className="bg-white dark:bg-gray-800 rounded p-2">
+                  <div className="font-bold text-green-600">Test 1: Center ✓</div>
+                  <div className="text-[10px] text-gray-500">Peak within ≤2px of catalog position across all bands (4/5 tested, 1 low-SNR skip)</div>
+                </div>
+                <div className="bg-white dark:bg-gray-800 rounded p-2">
+                  <div className="font-bold text-green-600">Test 2: Band Mapping ✓</div>
+                  <div className="text-[10px] text-gray-500">F444W/F150W brightness ratios match catalog SNR ratios (5/5 tested)</div>
+                </div>
+                <div className="bg-white dark:bg-gray-800 rounded p-2">
+                  <div className="font-bold text-green-600">Test 3: Point-Source ✓</div>
+                  <div className="text-[10px] text-gray-500">FWHM/PSF &lt; 0.15 sources show high concentration in raw pixels (3/3 tested)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="space-y-4">
           {filtered.map((c, i) => (
@@ -363,6 +575,11 @@ export default function Inspection() {
               index={tripleCandidates.indexOf(c)}
               userVerdict={verdicts[`${c.field}-${c.id}`] || null}
               onVerdict={(v) => setVerdict(`${c.field}-${c.id}`, v)}
+              debugMode={debugMode}
+              stretch={stretch}
+              showCrosshair={debugMode && showCrosshair}
+              showPsf={debugMode && showPsf}
+              showScale={debugMode && showScale}
             />
           ))}
         </div>

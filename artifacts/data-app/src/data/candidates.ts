@@ -33,11 +33,25 @@ export interface Candidate {
 
 export const BANDS = ["F150W", "F200W", "F277W", "F356W", "F444W"] as const;
 
-export function getLocalCutoutUrl(field: string, id: string, band: string): string {
+export type StretchMode = "asinh" | "sqrt" | "linear";
+
+export function getLocalCutoutUrl(field: string, id: string, band: string, stretch: StretchMode = "asinh"): string {
   const fieldTag = field === "GOODS-S" ? "goods-s" : "goods-n";
   const filt = band.toLowerCase();
-  return `${import.meta.env.BASE_URL}cutouts/${fieldTag}_${id}_${filt}.png`;
+  const suffix = stretch === "asinh" ? "" : `_${stretch}`;
+  return `${import.meta.env.BASE_URL}cutouts/${fieldTag}_${id}_${filt}${suffix}.png`;
 }
+
+export const PSF_FWHM_ARCSEC: Record<string, number> = {
+  F150W: 0.050,
+  F200W: 0.066,
+  F277W: 0.091,
+  F356W: 0.116,
+  F444W: 0.145,
+};
+
+export const PIXEL_SCALE_ARCSEC = 0.03;
+export const CUTOUT_SIZE_PX = 60;
 
 export const tripleCandidates: Candidate[] = 
 [

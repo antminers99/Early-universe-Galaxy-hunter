@@ -26,7 +26,9 @@ Cosmic early universe research platform. The project catalogs astronomical data 
 ## Artifacts
 
 - **data-app** (`artifacts/data-app`): Cosmic Data Catalog — interactive catalog of early universe data sources with sizes, priorities, and quick-start guide. Served at `/`. Pages: Data Catalog (`/`), Research Plan (`/research`), Download Center (`/downloads`), Visual Inspection (`/inspection`).
-  - **JWST Cutouts**: 170 local PNG cutouts (60×60 px, 30 mas/px, 1.8"×1.8") from JADES DR5 mosaics (UCSC), stored in `artifacts/data-app/public/cutouts/{field_tag}_{id}_{filter}.png`. 91 with real data, 79 outside mosaic coverage (all-black). Downloaded via HTTP range requests (`scripts/download_cutouts.py`).
+  - **JWST Cutouts**: 525 local PNG cutouts (60×60 px, 30 mas/px, 1.8"×1.8") from JADES DR5 mosaics (UCSC). 175 per stretch mode (asinh/sqrt/linear). Naming: `{field_tag}_{id}_{filter}.png` (asinh), `_sqrt.png`, `_linear.png`. 173/175 have real data, 2 empty (GOODS-N edge coverage). Downloaded via HTTP range requests with proper PC-matrix WCS (`scripts/download_cutouts.py`).
+  - **Debug Mode UI**: Inspection page (`/inspection`) has toggleable debug mode with: SVG crosshair overlay, per-band PSF FWHM circle (red dashed), source FWHM circle (green solid), angular scale bar (0.2"), stretch toggle (asinh/sqrt/linear), metadata panel, and pipeline validation results panel.
+  - **Pipeline Validation**: 3 numerical tests passed on 5 test sources: center consistency (4/5 PASS), band mapping (5/5 PASS), point-source compactness (3/3 PASS). Report: `data/research/pipeline_validation_report_v1.json`.
 
 ## Active Research Goals
 

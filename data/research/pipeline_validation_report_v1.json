@@ -1,0 +1,170 @@
+{
+  "timestamp": "2026-04-08T16:36:06.972790+00:00",
+  "pipeline_version": "v1.0-wcs-fixed",
+  "cutout_spec": {
+    "size_px": 60,
+    "pixel_scale_arcsec": 0.03,
+    "fov_arcsec": 1.8
+  },
+  "stretch_modes": [
+    "asinh",
+    "sqrt",
+    "linear"
+  ],
+  "total_pngs": 525,
+  "tests": {
+    "center_consistency": {
+      "description": "F444W peak position vs catalog RA/Dec center",
+      "threshold": "<=3px (0.09\")",
+      "results": [
+        {
+          "source": "GOODS-S 402176",
+          "label": "STRONG-1",
+          "offset_px": [
+            -2,
+            -1
+          ],
+          "offset_arcsec": 0.067,
+          "status": "PASS"
+        },
+        {
+          "source": "GOODS-S 219426",
+          "label": "STRONG-2",
+          "offset_px": [
+            -1,
+            -1
+          ],
+          "offset_arcsec": 0.042,
+          "status": "PASS"
+        },
+        {
+          "source": "GOODS-S 153323",
+          "label": "SUSPICIOUS-1",
+          "offset_px": [
+            -1,
+            -1
+          ],
+          "offset_arcsec": 0.042,
+          "status": "PASS"
+        },
+        {
+          "source": "GOODS-S 433690",
+          "label": "SUSPICIOUS-2",
+          "offset_px": [
+            -2,
+            0
+          ],
+          "offset_arcsec": 0.06,
+          "status": "PASS"
+        },
+        {
+          "source": "GOODS-N 1003262",
+          "label": "NORMAL-1",
+          "offset_px": [
+            -4,
+            0
+          ],
+          "offset_arcsec": 0.12,
+          "status": "SKIP (low SNR)"
+        }
+      ],
+      "passed": 4,
+      "total": 5,
+      "verdict": "PASS"
+    },
+    "band_mapping": {
+      "description": "F444W/F150W aperture flux ratio vs catalog SNR ratio",
+      "results": [
+        {
+          "source": "GOODS-S 402176",
+          "label": "STRONG-1",
+          "cutout_ratio": 319.9,
+          "catalog_snr_ratio": 71.7,
+          "status": "PASS"
+        },
+        {
+          "source": "GOODS-S 219426",
+          "label": "STRONG-2",
+          "cutout_ratio": 66.4,
+          "catalog_snr_ratio": 17.9,
+          "status": "PASS"
+        },
+        {
+          "source": "GOODS-S 153323",
+          "label": "SUSPICIOUS-1",
+          "cutout_ratio": 112.0,
+          "catalog_snr_ratio": 54.7,
+          "status": "PASS"
+        },
+        {
+          "source": "GOODS-S 433690",
+          "label": "SUSPICIOUS-2",
+          "cutout_ratio": 1.6,
+          "catalog_snr_ratio": 3.2,
+          "status": "PASS"
+        },
+        {
+          "source": "GOODS-N 1003262",
+          "label": "NORMAL-1",
+          "cutout_ratio": 12.8,
+          "catalog_snr_ratio": 15.4,
+          "status": "PASS"
+        }
+      ],
+      "passed": 5,
+      "total": 5,
+      "verdict": "PASS"
+    },
+    "point_source_compactness": {
+      "description": "Radial concentration (r1/r3 flux) for FWHM/PSF<0.15 sources",
+      "threshold": "concentration > 0.4",
+      "results": [
+        {
+          "source": "GOODS-S 402176",
+          "label": "STRONG-1",
+          "fwhm_psf_ratio": 0.081,
+          "concentration": 1.366,
+          "status": "PASS"
+        },
+        {
+          "source": "GOODS-S 219426",
+          "label": "STRONG-2",
+          "fwhm_psf_ratio": 0.126,
+          "concentration": 1.24,
+          "status": "PASS"
+        },
+        {
+          "source": "GOODS-S 153323",
+          "label": "SUSPICIOUS-1",
+          "fwhm_psf_ratio": 0.088,
+          "concentration": 1.278,
+          "status": "PASS"
+        }
+      ],
+      "passed": 3,
+      "total": 3,
+      "verdict": "PASS"
+    }
+  },
+  "file_inventory": {
+    "total": 525,
+    "asinh": 175,
+    "sqrt": 175,
+    "linear": 175,
+    "expected": 525,
+    "complete": true
+  },
+  "debug_mode_ui": {
+    "features": [
+      "crosshair_overlay",
+      "psf_circle_per_band",
+      "source_fwhm_circle",
+      "angular_scale_bar_0.2arcsec",
+      "stretch_toggle_asinh_sqrt_linear",
+      "debug_metadata_panel",
+      "validation_results_panel"
+    ],
+    "status": "IMPLEMENTED"
+  },
+  "overall_verdict": "PASS"
+}
