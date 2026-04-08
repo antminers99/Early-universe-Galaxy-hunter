@@ -20,7 +20,8 @@ Cosmic early universe research platform. The project catalogs astronomical data 
 - **API codegen**: Orval (from OpenAPI spec)
 - **Build**: esbuild (CJS bundle)
 - **Frontend**: React + Vite + Tailwind CSS v4 + shadcn/ui + Recharts
-- **UI Direction**: RTL (Arabic)
+- **UI Direction**: LTR (English)
+- **Communication**: Arabic (Levantine dialect) in chat only — app UI is always English
 
 ## Artifacts
 
@@ -36,6 +37,7 @@ Cosmic early universe research platform. The project catalogs astronomical data 
 - **Plan file**: `data/research/goal-01-plan.md`
 - **Claim level**: Initial signal only — no discovery claims
 - **5 steps**: Download catalogs → Clean/filter z>6 → Hunt outliers → Kill hypotheses → External cross-match
+- **Progress tracking**: After completing any step, update status in `research-plan.ts`, update `goal-01-plan.md`, and use `research-progress` skill
 
 ## Research Skills Pipeline (26 skills, 4 phases)
 
