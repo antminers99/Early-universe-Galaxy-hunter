@@ -25,7 +25,7 @@ Cosmic early universe research platform. The project catalogs astronomical data 
 
 ## Artifacts
 
-- **data-app** (`artifacts/data-app`): Cosmic Data Catalog — interactive catalog of early universe data sources with sizes, priorities, and quick-start guide. Served at `/`. Pages: Data Catalog (`/`), Research Plan (`/research`), Download Center (`/downloads`).
+- **data-app** (`artifacts/data-app`): Cosmic Data Catalog — interactive catalog of early universe data sources with sizes, priorities, and quick-start guide. Served at `/`. Pages: Data Catalog (`/`), Research Plan (`/research`), Download Center (`/downloads`), Visual Inspection (`/inspection`).
 
 ## Active Research Goals
 

@@ -251,6 +251,10 @@ export default function Dashboard() {
             className="px-4 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
             Downloads
           </Link>
+          <Link href="/inspection"
+            className="px-4 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            Inspection
+          </Link>
         </nav>
 
         <div className="mb-8">
