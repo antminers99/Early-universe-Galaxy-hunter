@@ -24,7 +24,18 @@ Cosmic early universe research platform. The project catalogs astronomical data 
 
 ## Artifacts
 
-- **data-app** (`artifacts/data-app`): Cosmic Data Catalog — interactive catalog of early universe data sources with sizes, priorities, and quick-start guide. Served at `/`.
+- **data-app** (`artifacts/data-app`): Cosmic Data Catalog — interactive catalog of early universe data sources with sizes, priorities, and quick-start guide. Served at `/`. Includes Research Plan page at `/research`.
+
+## Active Research Goals
+
+### Goal 1: Strange Early Galaxies in JWST Public Data
+- **Question**: "Are there galaxies at z > 6 in JWST public catalogs (JADES DR5, CEERS, UNCOVER, COSMOS-Web) with anomalous photometric/morphological properties compared to theoretical expectations?"
+- **Anomaly types**: Too bright, too red, too compact, too mature for their age
+- **Data sources**: JADES DR5 (start here), CEERS, UNCOVER, COSMOS2025, GLASS-JWST
+- **External validation**: Euclid Q1, DESI DR1 (later stage)
+- **Plan file**: `data/research/goal-01-plan.md`
+- **Claim level**: Initial signal only — no discovery claims
+- **5 steps**: Download catalogs → Clean/filter z>6 → Hunt outliers → Kill hypotheses → External cross-match
 
 ## Research Skills Pipeline (26 skills, 4 phases)
 

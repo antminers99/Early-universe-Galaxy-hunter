@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link, useLocation } from "wouter";
 import {
   categories,
   quickStartOrder,
@@ -242,6 +243,17 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-background" dir="rtl">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-8">
+        <nav className="flex items-center gap-1 mb-6 p-1 rounded-lg bg-muted/50 w-fit">
+          <Link href="/"
+            className="px-4 py-2 rounded-md text-sm font-medium bg-card text-foreground shadow-sm">
+            فهرس البيانات
+          </Link>
+          <Link href="/research"
+            className="px-4 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            خطة البحث
+          </Link>
+        </nav>
+
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">
             فهرس بيانات الكون المبكر
