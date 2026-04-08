@@ -1,2 +1,0 @@
-data/catalogs/jades-dr5/jades_dr5_goods-n_photometry.fits filter=lfs diff=lfs merge=lfs -text
-data/catalogs/jades-dr5/jades_dr5_goods-s_photometry.fits filter=lfs diff=lfs merge=lfs -text
