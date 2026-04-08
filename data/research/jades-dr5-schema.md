@@ -1,6 +1,6 @@
 # JADES DR5 Catalog Schema Report
 
-**Generated:** 2026-04-08 14:17 UTC
+**Generated:** 2026-04-08 14:24 UTC
 **Method:** HTTP range requests (header-only, no full file download)
 
 ---
@@ -1185,6 +1185,9 @@
 | effective radius (R_eff) | YES |
 | Kron photometry | YES |
 | MIRI photometry | YES |
+| stellar mass (log M*) | NO |
+| star formation rate (SFR) | NO |
+| photo-z probability (Prob_gt_z) | YES |
 
 ---
 
@@ -1976,12 +1979,17 @@
 | effective radius (R_eff) | YES |
 | Kron photometry | YES |
 | MIRI photometry | YES |
+| stellar mass (log M*) | NO |
+| star formation rate (SFR) | NO |
+| photo-z probability (Prob_gt_z) | YES |
 
 ---
 
 ## Summary & Conclusions
 
-**All required columns are present in both fields.** The JADES DR5 photometric catalog contains:
+**Most required columns are present, but some are absent from this catalog:**
+
+#### Present in catalog
 
 - photo-z (EAZY): GOODS-S: YES, GOODS-N: YES
 - spectroscopic z: GOODS-S: YES, GOODS-N: YES
@@ -1991,6 +1999,18 @@
 - effective radius (R_eff): GOODS-S: YES, GOODS-N: YES
 - Kron photometry: GOODS-S: YES, GOODS-N: YES
 - MIRI photometry: GOODS-S: YES, GOODS-N: YES
+- photo-z probability (Prob_gt_z): GOODS-S: YES, GOODS-N: YES
+
+#### NOT present in this catalog
+
+- **stellar mass (log M*)**: GOODS-S: NO, GOODS-N: NO
+- **star formation rate (SFR)**: GOODS-S: NO, GOODS-N: NO
+
+> **Note:** JADES DR5 is a **photometric catalog** (flux measurements + EAZY photo-z fitting).
+> Stellar mass (log M*) and SFR require **SED fitting** (e.g., Prospector, BAGPIPES, CIGALE),
+> which is a separate analysis step not included in this catalog release.
+> These physical parameters must be derived from the photometry during our analysis (Step 3),
+> or obtained from a separate value-added catalog if one is published for DR5.
 
 ### Key Extensions for the Anomaly Search
 

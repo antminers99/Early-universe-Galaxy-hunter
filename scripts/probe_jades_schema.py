@@ -179,6 +179,9 @@ def check_research_columns(extensions):
         'effective radius (R_eff)': False,
         'Kron photometry': False,
         'MIRI photometry': False,
+        'stellar mass (log M*)': False,
+        'star formation rate (SFR)': False,
+        'photo-z probability (Prob_gt_z)': False,
     }
 
     for ext in extensions:
@@ -200,6 +203,12 @@ def check_research_columns(extensions):
                 needed['MIRI photometry'] = True
             if 'R_EFF' in cn or 'REFF' in cn or ('A' == cn and ext['extname'] == 'SIZE') or ('B' == cn and ext['extname'] == 'SIZE'):
                 needed['effective radius (R_eff)'] = True
+            if any(x in cn for x in ['MASS', 'MSTAR', 'LOG_M', 'LOGM', 'M_STAR', 'LMASS']):
+                needed['stellar mass (log M*)'] = True
+            if 'SFR' in cn:
+                needed['star formation rate (SFR)'] = True
+            if cn.startswith('PROB_GT_'):
+                needed['photo-z probability (Prob_gt_z)'] = True
 
     return needed
 
@@ -261,17 +270,39 @@ def generate_report(all_results):
                 all_needed[k] = {}
             all_needed[k][field] = v
 
-    all_found = all(all(field_vals.values()) for field_vals in all_needed.values())
+    found_items = {}
+    missing_items = {}
+    for k, field_vals in all_needed.items():
+        if all(field_vals.values()):
+            found_items[k] = field_vals
+        else:
+            missing_items[k] = field_vals
 
-    if all_found:
+    if not missing_items:
         lines.append("**All required columns are present in both fields.** The JADES DR5 photometric catalog contains:")
     else:
-        lines.append("**Some columns may need further verification:**")
+        lines.append("**Most required columns are present, but some are absent from this catalog:**")
 
     lines.append("")
-    for k, field_vals in all_needed.items():
-        statuses = [f"{f}: {'YES' if v else 'NO'}" for f, v in field_vals.items()]
+    lines.append("#### Present in catalog")
+    lines.append("")
+    for k, field_vals in found_items.items():
+        statuses = [f"{f}: YES" for f in field_vals]
         lines.append(f"- {k}: {', '.join(statuses)}")
+
+    if missing_items:
+        lines.append("")
+        lines.append("#### NOT present in this catalog")
+        lines.append("")
+        for k, field_vals in missing_items.items():
+            statuses = [f"{f}: NO" for f in field_vals]
+            lines.append(f"- **{k}**: {', '.join(statuses)}")
+        lines.append("")
+        lines.append("> **Note:** JADES DR5 is a **photometric catalog** (flux measurements + EAZY photo-z fitting).")
+        lines.append("> Stellar mass (log M*) and SFR require **SED fitting** (e.g., Prospector, BAGPIPES, CIGALE),")
+        lines.append("> which is a separate analysis step not included in this catalog release.")
+        lines.append("> These physical parameters must be derived from the photometry during our analysis (Step 3),")
+        lines.append("> or obtained from a separate value-added catalog if one is published for DR5.")
 
     lines.append("")
     lines.append("### Key Extensions for the Anomaly Search")
