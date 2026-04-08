@@ -1,4 +1,4 @@
-modules = ["nodejs-24"]
+modules = ["nodejs-24", "python-3.12"]
 
 [deployment]
 router = "application"
@@ -30,3 +30,7 @@ externalPort = 8081
 [[ports]]
 localPort = 24452
 externalPort = 80
+
+[nix]
+channel = "stable-25_05"
+packages = ["cairo", "ffmpeg-full", "freetype", "ghostscript", "glibcLocales", "gobject-introspection", "gtk3", "pkg-config", "qhull", "tcl", "tk"]
