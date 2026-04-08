@@ -288,7 +288,10 @@ def generate_report(all_results):
     lines.append("")
     for k, field_vals in found_items.items():
         statuses = [f"{f}: YES" for f in field_vals]
-        lines.append(f"- {k}: {', '.join(statuses)}")
+        extra = ""
+        if 'NIRCam' in k:
+            extra = " — **flux units (nJy), not magnitudes**; AB magnitudes can be computed as m_AB = -2.5 log10(flux_nJy) + 31.4"
+        lines.append(f"- {k}: {', '.join(statuses)}{extra}")
 
     if missing_items:
         lines.append("")

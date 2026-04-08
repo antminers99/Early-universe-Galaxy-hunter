@@ -1995,7 +1995,7 @@
 - spectroscopic z: GOODS-S: YES, GOODS-N: YES
 - RA/Dec coordinates: GOODS-S: YES, GOODS-N: YES
 - quality flags: GOODS-S: YES, GOODS-N: YES
-- NIRCam photometry (F090W-F444W): GOODS-S: YES, GOODS-N: YES
+- NIRCam photometry (F090W-F444W): GOODS-S: YES, GOODS-N: YES — **flux units (nJy), not magnitudes**; AB magnitudes can be computed as m_AB = -2.5 log10(flux_nJy) + 31.4
 - effective radius (R_eff): GOODS-S: YES, GOODS-N: YES
 - Kron photometry: GOODS-S: YES, GOODS-N: YES
 - MIRI photometry: GOODS-S: YES, GOODS-N: YES
