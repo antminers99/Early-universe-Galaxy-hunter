@@ -1,4 +1,4 @@
-final_rank,field,id,z,f444w_nJy,fwhm_psf_ratio,nn_arcsec,prob_gt_6,prob_gt_8,prob_gt_9,f090w_snr,f115w_snr,dropout_max_blue_snr,composite_score,claim_level
-1,GOODS-N,1030374,11.9,5991,4.4,18.4,1.0,0.9871,0.9034,2.5,1.3,2.5,0.8912,preliminary signal — candidate warranting spectroscopic follow-up
-2,GOODS-N,1203011,8.24,5934,4.79,15.31,1.0,0.9989,0.0097,2.5,0.6,2.5,0.7739,preliminary signal — candidate warranting spectroscopic follow-up
-3,GOODS-N,1125125,11.88,3834,3.82,8.68,1.0,0.9994,0.7728,1.5,2.6,2.6,0.6756,preliminary signal — candidate warranting spectroscopic follow-up
+final_rank,field,id,z,fwhm_arcsec,fwhm_psf_ratio,nn_arcsec,f444w_nJy,prob_gt_6,prob_gt_8,prob_gt_9,f090w_snr,f115w_snr,max_blue_snr,composite_score,claim_level
+1,GOODS-N,1030374,11.9,0.6377,4.4,18.4,5991,1.0,0.9871,0.9034,2.5,1.3,2.5,0.8912,preliminary signal — candidate warranting spectroscopic follow-up
+2,GOODS-N,1203011,8.24,0.6951,4.79,15.31,5934,1.0,0.9989,0.0097,2.5,0.6,2.5,0.7739,preliminary signal — candidate warranting spectroscopic follow-up
+3,GOODS-N,1125125,11.88,0.5541,3.82,8.68,3834,1.0,0.9994,0.7728,1.5,2.6,2.6,0.6756,preliminary signal — candidate warranting spectroscopic follow-up

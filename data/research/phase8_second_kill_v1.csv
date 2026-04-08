@@ -1,7 +1,7 @@
-rank,field,id,z,f444w,lowz_risk,blue_risk,pz_stability,environment,verdict,summary
-1,GOODS-N,1030374,11.9,5991,WEAK,CLEAN,STABLE,CLEAN,SURVIVOR,"Strongest z~12 candidate. All 4 checks pass cleanly. Extended (4.4× PSF), very red, perfectly isolated."
-2,GOODS-S,428330,11.61,4878,WEAK,CLEAN,STABLE,OK,SURVIVOR,"Very elongated (2.6:1), clearly extended. Clean dropout. Slight neighbor concern but morphologically distinct."
-4,GOODS-S,219426,8.3,6137,STRONG,HIGH,UNSTABLE,CLEAN,DROP,KILLED: P(z>6)=0.81 + F090W detection at SNR=5.9. Almost certainly a bright low-z interloper misidentified as z~8.
-5,GOODS-N,1203011,8.24,5934,WEAK,CLEAN,STABLE,CLEAN,SURVIVOR,"BEST CANDIDATE OVERALL. Cleanest dropout, most extended (4.8× PSF), most isolated. Textbook z~8 galaxy."
-7,GOODS-S,431625,11.74,4262,WEAK,CLEAN,STABLE,CLEAN,SURVIVOR,"Clean across all 4 checks. Extended (3.2× PSF), round, red. P(z>9)=0.98 is highest in group."
-9,GOODS-N,1125125,11.88,3834,WEAK,CLEAN,STABLE,CLEAN,SURVIVOR,"Clean on all checks. Extended (3.8× PSF), elongated. Only minor note: P(z>9)=0.77, slightly lower confidence at extreme redshift."
+field,id,z,fwhm_arcsec,fwhm_psf,nn_arcsec,f444w_nJy,p_gt_6,p_gt_8,p_gt_9,f090w_snr,f115w_snr,max_blue_snr,pz_score,blue_score,ext_score,iso_score,final_score,verdict
+GOODS-N,1030374,11.9,0.6377,4.4,18.4,5991,1.0,0.9871,0.9034,2.5,1.3,2.5,0.957,0.8,0.88,0.92,0.8912,SURVIVOR
+GOODS-N,1203011,8.24,0.6951,4.79,15.31,5934,1.0,0.9989,0.0097,2.5,0.6,2.5,0.604,0.8,0.959,0.766,0.7739,SURVIVOR
+GOODS-N,1125125,11.88,0.5541,3.82,8.68,3834,1.0,0.9994,0.7728,1.5,2.6,2.6,0.909,0.5,0.764,0.434,0.6756,SURVIVOR
+GOODS-S,428330,11.61,0.705,4.86,2.03,4877,0.9973,0.9096,0.8012,N/A,2.9,2.9,0.893,0.5,0.972,0.102,0.6562,SURVIVOR
+GOODS-S,431625,11.74,0.4701,3.24,6.57,4262,0.9994,0.993,0.9828,N/A,2.8,2.8,0.991,0.5,0.648,0.329,0.6501,SURVIVOR
+GOODS-S,219426,8.3,0.6085,4.2,5.32,6137,0.8093,0.7869,0.0037,5.9,23.1,23.1,0,0,0,0,0,DROP
