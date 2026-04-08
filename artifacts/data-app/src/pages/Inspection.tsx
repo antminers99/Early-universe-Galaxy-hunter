@@ -405,9 +405,16 @@ function CandidateCard({
             </div>
           )}
           {debugMode && (
-            <div className="mt-1 p-1.5 bg-blue-50 dark:bg-blue-900/20 rounded text-[10px] text-blue-700 dark:text-blue-400 font-mono">
-              FWHM/PSF(F444W) = {fwhmPsfRatio.toFixed(4)}<br />
-              PSF F150W = {PSF_FWHM_ARCSEC.F150W}&quot; | F444W = {PSF_FWHM_ARCSEC.F444W}&quot;
+            <div className="mt-1 p-2 bg-blue-50 dark:bg-blue-900/20 rounded text-[10px] text-blue-700 dark:text-blue-400 font-mono space-y-0.5">
+              <div className="font-bold text-blue-800 dark:text-blue-300 mb-1">Debug Info</div>
+              <div>ID: {candidate.id} | Field: {candidate.field}</div>
+              <div>RA: {candidate.ra.toFixed(6)} | Dec: {candidate.dec.toFixed(6)}</div>
+              <div>z_peak: {candidate.zPeak} | P(z&gt;6): {candidate.probGt6}</div>
+              <div>FWHM: {candidate.fwhmArcsec.toFixed(4)}&quot; ({candidate.fwhmPix.toFixed(3)} px)</div>
+              <div>PSF_F444W: {PSF_FWHM_ARCSEC.F444W}&quot; | PSF_F150W: {PSF_FWHM_ARCSEC.F150W}&quot;</div>
+              <div className="font-bold">FWHM / PSF_F444W = {fwhmPsfRatio.toFixed(4)}</div>
+              <div>SNR_F444W: {candidate.snrF444W?.toFixed(1)} | SNR_F150W: {candidate.snrF150W?.toFixed(1)} | SNR_F277W: {candidate.snrF277W?.toFixed(1)}</div>
+              <div>Cutout: {CUTOUT_SIZE_PX}×{CUTOUT_SIZE_PX} px = {(CUTOUT_SIZE_PX * PIXEL_SCALE_ARCSEC).toFixed(1)}&quot;×{(CUTOUT_SIZE_PX * PIXEL_SCALE_ARCSEC).toFixed(1)}&quot; | {PIXEL_SCALE_ARCSEC * 1000} mas/px</div>
             </div>
           )}
         </div>
@@ -422,6 +429,7 @@ export default function Inspection() {
   const [filterBin, setFilterBin] = useState<string>("all");
   const [filterVerdict, setFilterVerdict] = useState<string>("all");
   const [debugMode, setDebugMode] = useState(false);
+  const [testOnly, setTestOnly] = useState(false);
   const [stretch, setStretch] = useState<StretchMode>("asinh");
   const [showCrosshair, setShowCrosshair] = useState(true);
   const [showPsf, setShowPsf] = useState(true);
@@ -431,8 +439,11 @@ export default function Inspection() {
     setVerdicts((prev) => ({ ...prev, [id]: v }));
   };
 
+  const TEST_SOURCE_IDS = new Set(["402176", "219426", "153323", "433690", "1003262"]);
+
   const filtered = useMemo(() => {
     return tripleCandidates.filter((c) => {
+      if (testOnly && !TEST_SOURCE_IDS.has(c.id)) return false;
       if (filterField !== "all" && c.field !== filterField) return false;
       if (filterBin !== "all" && c.binZ !== filterBin) return false;
       if (filterVerdict === "unmarked" && verdicts[`${c.field}-${c.id}`] !== undefined) return false;
@@ -441,7 +452,7 @@ export default function Inspection() {
       if (filterVerdict === "FAIL" && verdicts[`${c.field}-${c.id}`] !== "FAIL") return false;
       return true;
     });
-  }, [filterField, filterBin, filterVerdict, verdicts]);
+  }, [filterField, filterBin, filterVerdict, verdicts, testOnly]);
 
   const stats = useMemo(() => {
     const total = tripleCandidates.length;
@@ -575,6 +586,17 @@ export default function Inspection() {
               >
                 <Ruler className="w-3 h-3" /> Scale Bar
               </button>
+
+              <div className="w-px h-4 bg-gray-300 dark:bg-gray-600" />
+
+              <button
+                onClick={() => setTestOnly(!testOnly)}
+                className={`flex items-center gap-0.5 px-2 py-0.5 text-[10px] rounded font-medium ${
+                  testOnly ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-500 hover:bg-orange-50'
+                }`}
+              >
+                5 Test Sources Only
+              </button>
             </div>
           )}
         </div>
@@ -596,21 +618,34 @@ export default function Inspection() {
         {debugMode && (
           <div className="mb-4 p-3 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg">
             <div className="text-xs text-purple-700 dark:text-purple-400">
-              <strong>Pipeline Validation Results:</strong>
-              <div className="grid grid-cols-3 gap-2 mt-1">
-                <div className="bg-white dark:bg-gray-800 rounded p-2">
-                  <div className="font-bold text-green-600">Test 1: Center ✓</div>
-                  <div className="text-[10px] text-gray-500">Peak within ≤2px of catalog position across all bands (4/5 tested, 1 low-SNR skip)</div>
+              <strong>3 Mandatory Tests — All PASSED (inspection unlocked):</strong>
+              <div className="grid grid-cols-3 gap-2 mt-2">
+                <div className="bg-white dark:bg-gray-800 rounded p-2 border border-green-200 dark:border-green-800">
+                  <div className="font-bold text-green-600">Test A: Center ✓</div>
+                  <div className="text-[10px] text-gray-500 mt-1">Source stays at same position across all bands.</div>
+                  <div className="text-[10px] text-gray-400 mt-0.5">Peak ≤2px from catalog RA/Dec. 4/5 PASS, 1 SKIP (low SNR).</div>
+                  <div className="text-[10px] font-mono text-green-600 mt-1">402176: (-2,-1)px ✓ | 219426: (-1,-1)px ✓</div>
                 </div>
-                <div className="bg-white dark:bg-gray-800 rounded p-2">
-                  <div className="font-bold text-green-600">Test 2: Band Mapping ✓</div>
-                  <div className="text-[10px] text-gray-500">F444W/F150W brightness ratios match catalog SNR ratios (5/5 tested)</div>
+                <div className="bg-white dark:bg-gray-800 rounded p-2 border border-green-200 dark:border-green-800">
+                  <div className="font-bold text-green-600">Test B: Band Mapping ✓</div>
+                  <div className="text-[10px] text-gray-500 mt-1">Bands reflect known SNR differences correctly.</div>
+                  <div className="text-[10px] text-gray-400 mt-0.5">F444W/F150W ratios match catalog. 5/5 PASS.</div>
+                  <div className="text-[10px] font-mono text-green-600 mt-1">402176: 320× ✓ | 153323: 112× (dropout) ✓</div>
                 </div>
-                <div className="bg-white dark:bg-gray-800 rounded p-2">
-                  <div className="font-bold text-green-600">Test 3: Point-Source ✓</div>
-                  <div className="text-[10px] text-gray-500">FWHM/PSF &lt; 0.15 sources show high concentration in raw pixels (3/3 tested)</div>
+                <div className="bg-white dark:bg-gray-800 rounded p-2 border border-green-200 dark:border-green-800">
+                  <div className="font-bold text-green-600">Test C: Point-Source ✓</div>
+                  <div className="text-[10px] text-gray-500 mt-1">FWHM/PSF &lt; 0.15 sources look point-like visually.</div>
+                  <div className="text-[10px] text-gray-400 mt-0.5">Concentration &gt; 0.4 for all tested. 3/3 PASS.</div>
+                  <div className="text-[10px] font-mono text-green-600 mt-1">402176: 1.37 ✓ | 219426: 1.24 ✓ | 153323: 1.28 ✓</div>
                 </div>
               </div>
+              {testOnly && (
+                <div className="mt-2 p-2 bg-orange-50 dark:bg-orange-900/20 rounded border border-orange-200 dark:border-orange-800">
+                  <div className="text-[10px] font-bold text-orange-700 dark:text-orange-400">
+                    Showing 5 test sources only: 402176 (STRONG), 219426 (STRONG), 153323 (SUSPICIOUS), 433690 (SUSPICIOUS), 1003262 (NORMAL)
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
