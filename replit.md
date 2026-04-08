@@ -26,6 +26,7 @@ Cosmic early universe research platform. The project catalogs astronomical data 
 ## Artifacts
 
 - **data-app** (`artifacts/data-app`): Cosmic Data Catalog — interactive catalog of early universe data sources with sizes, priorities, and quick-start guide. Served at `/`. Pages: Data Catalog (`/`), Research Plan (`/research`), Download Center (`/downloads`), Visual Inspection (`/inspection`).
+  - **JWST Cutouts**: 170 local PNG cutouts (60×60 px, 30 mas/px, 1.8"×1.8") from JADES DR5 mosaics (UCSC), stored in `artifacts/data-app/public/cutouts/{field_tag}_{id}_{filter}.png`. 91 with real data, 79 outside mosaic coverage (all-black). Downloaded via HTTP range requests (`scripts/download_cutouts.py`).
 
 ## Active Research Goals
 

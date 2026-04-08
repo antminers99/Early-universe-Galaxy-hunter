@@ -3,23 +3,17 @@ import { Link } from "wouter";
 import {
   tripleCandidates,
   BANDS,
-  HIPS_IDS,
-  getCutoutUrl,
+  getLocalCutoutUrl,
   type Candidate,
 } from "@/data/candidates";
 import {
   ArrowLeft,
-  ChevronLeft,
-  ChevronRight,
   Check,
   HelpCircle,
   X,
   AlertTriangle,
   Eye,
   Filter,
-  BarChart3,
-  ZoomIn,
-  ZoomOut,
 } from "lucide-react";
 
 type UserVerdict = "PASS" | "MAYBE" | "FAIL" | null;
@@ -57,37 +51,58 @@ function CheckBadge({ ok, label }: { ok: boolean; label: string }) {
   );
 }
 
-function CutoutImage({ ra, dec, band, zoom }: { ra: number; dec: number; band: string; zoom: number }) {
-  const [loaded, setLoaded] = useState(false);
-  const [error, setError] = useState(false);
-  const hipsId = HIPS_IDS[band] || "ESAVO/P/JWST/NIRCam_Imaging";
-  const fov = 0.001 / zoom;
-  const url = getCutoutUrl(ra, dec, hipsId, 256, fov);
+function CutoutImage({ field, id, band }: { field: string; id: string; band: string }) {
+  const [status, setStatus] = useState<"loading" | "ok" | "empty" | "error">("loading");
+  const url = getLocalCutoutUrl(field, id, band);
 
   return (
     <div className="flex flex-col items-center gap-1">
       <span className="text-[10px] font-mono text-gray-500 font-medium">{band}</span>
       <div className="relative w-24 h-24 bg-black rounded border border-gray-700 overflow-hidden">
-        {!loaded && !error && (
+        {status === "loading" && (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-4 h-4 border-2 border-gray-500 border-t-transparent rounded-full animate-spin" />
           </div>
         )}
-        {error ? (
-          <div className="absolute inset-0 flex items-center justify-center text-gray-500 text-[10px]">
-            No data
+        {(status === "error" || status === "empty") ? (
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-500">
+            <span className="text-[10px]">{status === "empty" ? "No coverage" : "Missing"}</span>
           </div>
         ) : (
           <img
             src={url}
             alt={`${band} cutout`}
             className="w-full h-full object-contain"
-            onLoad={() => setLoaded(true)}
-            onError={() => setError(true)}
+            style={{ imageRendering: "pixelated" }}
+            onLoad={(e) => {
+              const img = e.target as HTMLImageElement;
+              const canvas = document.createElement("canvas");
+              canvas.width = Math.min(img.naturalWidth, 60);
+              canvas.height = Math.min(img.naturalHeight, 60);
+              const ctx = canvas.getContext("2d");
+              if (ctx) {
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+                let nonZero = 0;
+                for (let i = 0; i < data.length; i += 16) {
+                  if (data[i] > 5 || data[i+1] > 5 || data[i+2] > 5) nonZero++;
+                }
+                if (nonZero < 3) {
+                  setStatus("empty");
+                } else {
+                  setStatus("ok");
+                }
+              } else {
+                setStatus("ok");
+              }
+            }}
+            onError={() => setStatus("error")}
             loading="lazy"
           />
         )}
-        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-blue-400/50 to-transparent" />
+        {status === "ok" && (
+          <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-blue-400/50 to-transparent" />
+        )}
       </div>
     </div>
   );
@@ -104,8 +119,6 @@ function CandidateCard({
   userVerdict: UserVerdict;
   onVerdict: (v: UserVerdict) => void;
 }) {
-  const [zoom, setZoom] = useState(1);
-
   const verdictColor = {
     PASS: "border-green-500/30 bg-green-50/50 dark:bg-green-950/20",
     MAYBE: "border-yellow-500/30 bg-yellow-50/50 dark:bg-yellow-950/20",
@@ -173,29 +186,12 @@ function CandidateCard({
       <div className="mb-3">
         <div className="flex items-center justify-between mb-1">
           <span className="text-[10px] text-gray-500 font-medium uppercase tracking-wider">
-            JWST Cutouts — F150W → F444W (left to right = blue to red)
+            JWST JADES DR5 Cutouts — F150W → F444W (1.8&quot; × 1.8&quot;, 30 mas/px)
           </span>
-          <div className="flex items-center gap-1">
-            <button
-              onClick={() => setZoom(z => Math.max(0.5, z / 1.5))}
-              className="p-0.5 text-gray-400 hover:text-gray-600"
-              title="Zoom out"
-            >
-              <ZoomOut className="w-3.5 h-3.5" />
-            </button>
-            <span className="text-[10px] text-gray-400 w-8 text-center">{zoom.toFixed(1)}x</span>
-            <button
-              onClick={() => setZoom(z => Math.min(4, z * 1.5))}
-              className="p-0.5 text-gray-400 hover:text-gray-600"
-              title="Zoom in"
-            >
-              <ZoomIn className="w-3.5 h-3.5" />
-            </button>
-          </div>
         </div>
         <div className="flex items-center gap-2 bg-black/90 rounded-lg p-3 overflow-x-auto">
           {BANDS.map((band) => (
-            <CutoutImage key={band} ra={candidate.ra} dec={candidate.dec} band={band} zoom={zoom} />
+            <CutoutImage key={band} field={candidate.field} id={candidate.id} band={band} />
           ))}
         </div>
       </div>

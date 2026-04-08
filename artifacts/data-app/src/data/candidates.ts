@@ -33,16 +33,10 @@ export interface Candidate {
 
 export const BANDS = ["F150W", "F200W", "F277W", "F356W", "F444W"] as const;
 
-export const HIPS_IDS: Record<string, string> = {
-  F150W: "CDS/P/JWST/F150W",
-  F200W: "CDS/P/JWST/F200W",
-  F444W: "CDS/P/JWST/F444W",
-  F277W: "ESAVO/P/JWST/NIRCam_Imaging",
-  F356W: "ESAVO/P/JWST/NIRCam_Imaging",
-};
-
-export function getCutoutUrl(ra: number, dec: number, hipsId: string, size = 128, fovDeg = 0.001): string {
-  return `https://alasky.cds.unistra.fr/hips-image-services/hips2fits?hips=${encodeURIComponent(hipsId)}&ra=${ra}&dec=${dec}&fov=${fovDeg}&width=${size}&height=${size}&format=jpg&min_cut=0&max_cut=0.05`;
+export function getLocalCutoutUrl(field: string, id: string, band: string): string {
+  const fieldTag = field === "GOODS-S" ? "goods-s" : "goods-n";
+  const filt = band.toLowerCase();
+  return `${import.meta.env.BASE_URL}cutouts/${fieldTag}_${id}_${filt}.png`;
 }
 
 export const tripleCandidates: Candidate[] = 
