@@ -4,6 +4,10 @@
 
 pnpm workspace monorepo using TypeScript. Each package manages its own dependencies.
 
+## Project Purpose
+
+Cosmic early universe research platform. The project catalogs astronomical data sources and implements a pipeline of research skills for analyzing early universe data (JWST, CMB, ALMA, Euclid, DESI, SDSS, HERA, GWOSC).
+
 ## Stack
 
 - **Monorepo tool**: pnpm workspaces
@@ -15,6 +19,60 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - **Validation**: Zod (`zod/v4`), `drizzle-zod`
 - **API codegen**: Orval (from OpenAPI spec)
 - **Build**: esbuild (CJS bundle)
+- **Frontend**: React + Vite + Tailwind CSS v4 + shadcn/ui + Recharts
+- **UI Direction**: RTL (Arabic)
+
+## Artifacts
+
+- **data-app** (`artifacts/data-app`): Cosmic Data Catalog — interactive catalog of early universe data sources with sizes, priorities, and quick-start guide. Served at `/`.
+
+## Research Skills Pipeline (26 skills, 4 phases)
+
+### Phase 1 — Foundation (Skills 1-8)
+1. **Source Finder** — Find all important data sources from the web
+2. **Paper Finder** — Collect key research papers related to each data source or question
+3. **Paper Screener** — Classify papers: very important / useful / weak / outdated
+4. **Question Builder** — Convert big ideas into small testable questions
+5. **Download Manager** — Download, organize, and store data with clear naming
+6. **Metadata Reader** — Understand each file: origin, type, instrument used
+7. **Data Cleaner** — Clean data: duplicates, missing values, obvious errors, inconsistent columns
+8. **Reproducibility Builder** — Make every step reproducible from scratch
+
+### Phase 2 — Analysis (Skills 9-14)
+9. **Catalog Cross-Matcher** — Link same object across multiple data sources
+10. **Visual Inspector** — Inspect images for anomalies, unusual colors, shapes, errors
+11. **Spectra Reader** — Read spectra and extract basic info (AI-assisted but needs human review for sensitive interpretation)
+12. **Pattern Finder** — Detect recurring patterns not easily visible
+13. **Outlier Hunter** — Find things outside the norm
+14. **Population Analyzer** — Compare groups of objects to identify what's normal vs different
+
+### Phase 3 — Validation (Skills 15-20)
+15. **Bias Checker** — Check if result is caused by observation method, instrument, sample selection, or data gaps
+16. **Statistical Tester** — Determine if result is strong or just coincidence (needs manual review for sensitive analyses)
+17. **Robustness Checker** — Re-test with different methods
+18. **Alternative Explanation Finder** — Search for ordinary explanations before claiming novelty
+19. **Hypothesis Killer** — Try to destroy the hypothesis we like
+20. **Claim Limiter** — Calibrate language: initial signal / probability / strong result (not "confirmed discovery")
+
+### Phase 4 — Documentation (Skills 21-26)
+21. **Research Memory** — Remember everything tried, failed, and succeeded
+22. **Result Summarizer** — Summarize each phase in simple language
+23. **Figure Builder** — Create clear visualizations
+24. **Notebook Builder** — Build organized analysis notebooks
+25. **Report Writer** — Write clean reports
+26. **Next-Step Planner** — Decide smartest next step
+
+### Priority Start (first 10 skills to build)
+Source Finder, Paper Finder, Paper Screener, Question Builder, Download Manager, Metadata Reader, Data Cleaner, Catalog Cross-Matcher, Outlier Hunter, Bias Checker
+
+### Top 3 Core Skills
+- **Question Builder** — clear question
+- **Outlier Hunter** — something strange
+- **Bias Checker** — verify if real or deception
+
+### AI Trust Guidelines
+AI is excellent at: data collection, paper organization, initial cleaning, code writing, pattern searching.
+AI should NOT be trusted alone for: very sensitive interpretation, discovery announcements, precise spectral analysis, complex statistical testing without review.
 
 ## Key Commands
 
