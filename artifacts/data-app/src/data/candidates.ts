@@ -53,6 +53,11 @@ export const PSF_FWHM_ARCSEC: Record<string, number> = {
 export const PIXEL_SCALE_ARCSEC = 0.03;
 export const CUTOUT_SIZE_PX = 60;
 
+export function getRgbCompositeUrl(field: string, id: string): string {
+  const fieldTag = field === "GOODS-S" ? "goods-s" : "goods-n";
+  return `${import.meta.env.BASE_URL}cutouts/${fieldTag}_${id}_rgb.png`;
+}
+
 export const tripleCandidates: Candidate[] = 
 [
   {

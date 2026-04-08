@@ -4,6 +4,7 @@ import {
   tripleCandidates,
   BANDS,
   getLocalCutoutUrl,
+  getRgbCompositeUrl,
   PSF_FWHM_ARCSEC,
   PIXEL_SCALE_ARCSEC,
   CUTOUT_SIZE_PX,
@@ -287,7 +288,7 @@ function CandidateCard({
       <div className="mb-3">
         <div className="flex items-center justify-between mb-1">
           <span className="text-[10px] text-gray-500 font-medium uppercase tracking-wider">
-            JWST JADES DR5 Cutouts — {stretch.toUpperCase()} stretch — {(CUTOUT_SIZE_PX * PIXEL_SCALE_ARCSEC).toFixed(1)}&quot; × {(CUTOUT_SIZE_PX * PIXEL_SCALE_ARCSEC).toFixed(1)}&quot;
+            JWST JADES DR5 — {stretch.toUpperCase()} stretch — {(CUTOUT_SIZE_PX * PIXEL_SCALE_ARCSEC).toFixed(1)}&quot; × {(CUTOUT_SIZE_PX * PIXEL_SCALE_ARCSEC).toFixed(1)}&quot;
           </span>
           {debugMode && showPsf && (
             <div className="flex items-center gap-2 text-[9px]">
@@ -297,20 +298,67 @@ function CandidateCard({
             </div>
           )}
         </div>
-        <div className="flex items-center gap-3 bg-black/90 rounded-lg p-3 overflow-x-auto">
-          {BANDS.map((band) => (
-            <CutoutPanel
-              key={`${band}-${stretch}`}
-              field={candidate.field}
-              id={candidate.id}
-              band={band}
-              stretch={stretch}
-              showCrosshair={showCrosshair}
-              showPsf={showPsf}
-              showScale={showScale}
-              fwhmArcsec={candidate.fwhmArcsec}
-            />
-          ))}
+        <div className="flex items-start gap-3 bg-black/90 rounded-lg p-3 overflow-x-auto">
+          <div className="flex flex-col items-center gap-1 flex-shrink-0">
+            <span className="text-[10px] font-mono text-yellow-400 font-bold tracking-wider">RGB</span>
+            <div className="relative bg-black rounded border-2 border-yellow-500/40 overflow-hidden"
+                 style={{ width: DISPLAY_SIZE * 1.5, height: DISPLAY_SIZE * 1.5 }}>
+              <img
+                src={getRgbCompositeUrl(candidate.field, candidate.id)}
+                alt="RGB composite"
+                className="w-full h-full object-contain"
+                style={{ imageRendering: "pixelated" }}
+                loading="lazy"
+              />
+              {(showCrosshair || showPsf || showScale) && (
+                <svg className="absolute inset-0 w-full h-full pointer-events-none"
+                     viewBox={`0 0 ${DISPLAY_SIZE * 1.5} ${DISPLAY_SIZE * 1.5}`}>
+                  {showCrosshair && (
+                    <g stroke="rgba(255,255,255,0.5)" strokeWidth="0.5">
+                      <line x1={DISPLAY_SIZE*0.75-12} y1={DISPLAY_SIZE*0.75} x2={DISPLAY_SIZE*0.75-4} y2={DISPLAY_SIZE*0.75} />
+                      <line x1={DISPLAY_SIZE*0.75+4} y1={DISPLAY_SIZE*0.75} x2={DISPLAY_SIZE*0.75+12} y2={DISPLAY_SIZE*0.75} />
+                      <line x1={DISPLAY_SIZE*0.75} y1={DISPLAY_SIZE*0.75-12} x2={DISPLAY_SIZE*0.75} y2={DISPLAY_SIZE*0.75-4} />
+                      <line x1={DISPLAY_SIZE*0.75} y1={DISPLAY_SIZE*0.75+4} x2={DISPLAY_SIZE*0.75} y2={DISPLAY_SIZE*0.75+12} />
+                    </g>
+                  )}
+                  {showScale && (() => {
+                    const scalePx = SCALE_BAR_PX * PX_TO_DISPLAY * 1.5;
+                    return (
+                      <g>
+                        <line x1={8} y1={DISPLAY_SIZE*1.5-12} x2={8 + scalePx} y2={DISPLAY_SIZE*1.5-12}
+                          stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" />
+                        <text x={8 + scalePx/2} y={DISPLAY_SIZE*1.5-18}
+                          fill="rgba(255,255,255,0.8)" fontSize="9" textAnchor="middle" fontFamily="monospace">
+                          {SCALE_BAR_ARCSEC}&quot;
+                        </text>
+                      </g>
+                    );
+                  })()}
+                </svg>
+              )}
+            </div>
+            <span className="text-[8px] text-gray-400 text-center">
+              <span className="text-red-400">R</span>=F444W <span className="text-green-400">G</span>=F277W <span className="text-blue-400">B</span>=F150W
+            </span>
+          </div>
+
+          <div className="flex-shrink-0 w-px bg-gray-700 self-stretch" />
+
+          <div className="flex items-start gap-2">
+            {BANDS.map((band) => (
+              <CutoutPanel
+                key={`${band}-${stretch}`}
+                field={candidate.field}
+                id={candidate.id}
+                band={band}
+                stretch={stretch}
+                showCrosshair={showCrosshair}
+                showPsf={showPsf}
+                showScale={showScale}
+                fwhmArcsec={candidate.fwhmArcsec}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
