@@ -1,0 +1,7 @@
+rank,field,id,z,f444w,lowz_risk,blue_risk,pz_stability,environment,verdict,summary
+1,GOODS-N,1030374,11.9,5991,WEAK,CLEAN,STABLE,CLEAN,SURVIVOR,"Strongest z~12 candidate. All 4 checks pass cleanly. Extended (4.4× PSF), very red, perfectly isolated."
+2,GOODS-S,428330,11.61,4878,WEAK,CLEAN,STABLE,OK,SURVIVOR,"Very elongated (2.6:1), clearly extended. Clean dropout. Slight neighbor concern but morphologically distinct."
+4,GOODS-S,219426,8.3,6137,STRONG,HIGH,UNSTABLE,CLEAN,DROP,KILLED: P(z>6)=0.81 + F090W detection at SNR=5.9. Almost certainly a bright low-z interloper misidentified as z~8.
+5,GOODS-N,1203011,8.24,5934,WEAK,CLEAN,STABLE,CLEAN,SURVIVOR,"BEST CANDIDATE OVERALL. Cleanest dropout, most extended (4.8× PSF), most isolated. Textbook z~8 galaxy."
+7,GOODS-S,431625,11.74,4262,WEAK,CLEAN,STABLE,CLEAN,SURVIVOR,"Clean across all 4 checks. Extended (3.2× PSF), round, red. P(z>9)=0.98 is highest in group."
+9,GOODS-N,1125125,11.88,3834,WEAK,CLEAN,STABLE,CLEAN,SURVIVOR,"Clean on all checks. Extended (3.8× PSF), elongated. Only minor note: P(z>9)=0.77, slightly lower confidence at extreme redshift."

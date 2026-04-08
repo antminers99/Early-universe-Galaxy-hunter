@@ -30,6 +30,10 @@ Cosmic early universe research platform. The project catalogs astronomical data 
   - **Debug Mode UI**: Inspection page (`/inspection`) has toggleable debug mode with: SVG crosshair overlay, per-band PSF FWHM circle (red dashed), source FWHM circle (green solid), angular scale bar (0.2"), stretch toggle (asinh/sqrt/linear), metadata panel, and pipeline validation results panel.
   - **Pipeline Validation**: 3 numerical tests passed on 5 test sources: center consistency (4/5 PASS), band mapping (5/5 PASS), point-source compactness (3/3 PASS). Report: `data/research/pipeline_validation_report_v1.json`.
   - **Phase 5.5 Bug Fix**: JADES DR5 FWHM column is in **arcsec** (not pixels). Pipeline had mislabeled it `FWHM_pix` and audit script applied double conversion (×0.03), making all values 33× too small. Fixed: columns renamed to `_arcsec`, double conversion removed. Corrected audit: 32 PASS, 3 MAYBE, 0 FAIL. Report: `data/research/phase_5_5_validation_report.json`.
+  - **Phase 6 — Top Candidates Ranking**: Composite scoring (brightness 25%, redness 25%, compactness 20%, resolution 15%, cleanliness 15%). Top 10 identified. Report: `data/research/top_candidates_v1.csv`.
+  - **Phase 7 — Visual Inspection**: Top 10 inspected → 6 PASS, 4 MAYBE. Report: `data/research/top10_visual_inspection_v1.csv/json`.
+  - **Phase 8 — Second Kill Audit**: 4 checks (low-z risk, blue risk, photo-z stability, environment) on 6 visual-PASS. GOODS-S 219426 DROPPED (P(z>6)=0.81 + F090W=5.9 SNR). 5 survivors ranked → **Top 3 final selected**. Report: `data/research/final_top3_v1.csv/json`, `data/research/phase8_second_kill_v1.csv/json`.
+  - **Final Top 3**: (1) GOODS-N 1030374 z=11.9, (2) GOODS-N 1203011 z=8.2, (3) GOODS-N 1125125 z=11.9. All from GOODS-N. Claim level: "preliminary signals warranting spectroscopic follow-up."
 
 ## Active Research Goals
 
