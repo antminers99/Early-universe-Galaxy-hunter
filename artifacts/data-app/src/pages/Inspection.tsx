@@ -230,14 +230,23 @@ function CandidateCard({
       <div className="flex items-start justify-between mb-3">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-sm font-bold text-gray-400">#{index + 1}</span>
+            {candidate.isTop10 ? (
+              <span className="text-sm font-bold text-amber-500">#{candidate.overallRank}</span>
+            ) : (
+              <span className="text-sm font-bold text-gray-400">#{candidate.overallRank || index + 1}</span>
+            )}
             <h3 className="font-mono font-bold text-base">{candidate.field} — {candidate.id}</h3>
+            {candidate.isTop10 && (
+              <span className="text-[10px] px-1.5 py-0.5 rounded font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400">
+                TOP 10
+              </span>
+            )}
             <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${autoVerdictBg}`}>
               Auto: {candidate.verdict}
             </span>
             {debugMode && (
               <span className="text-[10px] px-1.5 py-0.5 rounded font-mono bg-gray-100 dark:bg-gray-800 text-gray-600">
-                FWHM/PSF = {fwhmPsfRatio.toFixed(3)}
+                FWHM/PSF = {fwhmPsfRatio.toFixed(3)} | Score = {candidate.compositeScore.toFixed(3)}
               </span>
             )}
           </div>
@@ -432,6 +441,8 @@ export default function Inspection() {
   const [filterVerdict, setFilterVerdict] = useState<string>("all");
   const [debugMode, setDebugMode] = useState(false);
   const [testOnly, setTestOnly] = useState(false);
+  const [top10Only, setTop10Only] = useState(false);
+  const [passOnly, setPassOnly] = useState(true);
   const [stretch, setStretch] = useState<StretchMode>("asinh");
   const [showCrosshair, setShowCrosshair] = useState(true);
   const [showPsf, setShowPsf] = useState(true);
@@ -446,6 +457,8 @@ export default function Inspection() {
   const filtered = useMemo(() => {
     return tripleCandidates.filter((c) => {
       if (testOnly && !TEST_SOURCE_IDS.has(c.id)) return false;
+      if (top10Only && !c.isTop10) return false;
+      if (passOnly && c.verdict !== "PASS") return false;
       if (filterField !== "all" && c.field !== filterField) return false;
       if (filterBin !== "all" && c.binZ !== filterBin) return false;
       if (filterVerdict === "unmarked" && verdicts[`${c.field}-${c.id}`] !== undefined) return false;
@@ -454,7 +467,7 @@ export default function Inspection() {
       if (filterVerdict === "FAIL" && verdicts[`${c.field}-${c.id}`] !== "FAIL") return false;
       return true;
     });
-  }, [filterField, filterBin, filterVerdict, verdicts, testOnly]);
+  }, [filterField, filterBin, filterVerdict, verdicts, testOnly, top10Only, passOnly]);
 
   const stats = useMemo(() => {
     const total = tripleCandidates.length;
@@ -480,7 +493,7 @@ export default function Inspection() {
                   Visual Inspection — Triple Overlap Candidates
                 </h1>
                 <p className="text-xs text-gray-500">
-                  {stats.total} candidates | z {">"} 8 | brightness + redness + compactness overlap
+                  {stats.total} candidates ({tripleCandidates.filter(c => c.verdict === "PASS").length} PASS) | z {">"} 8 | brightness + redness + compactness overlap | Ranked by composite score
                 </p>
               </div>
             </div>
@@ -525,7 +538,7 @@ export default function Inspection() {
             >
               <option value="all">All z-bins</option>
               <option value="8-10">z = 8–10</option>
-              <option value="10-15">z = 10–15</option>
+              <option value="10-15">z = 10–12+</option>
             </select>
             <select
               value={filterVerdict}
@@ -539,6 +552,25 @@ export default function Inspection() {
               <option value="FAIL">FAIL only</option>
             </select>
             <span className="text-xs text-gray-400">Showing {filtered.length} of {stats.total}</span>
+
+            <div className="flex items-center gap-1 ml-2">
+              <button
+                onClick={() => { setTop10Only(!top10Only); setTestOnly(false); }}
+                className={`px-2 py-0.5 text-[10px] rounded font-medium transition-colors ${
+                  top10Only ? 'bg-amber-500 text-white' : 'bg-gray-100 text-gray-500 hover:bg-amber-50'
+                }`}
+              >
+                Top 10 Only
+              </button>
+              <button
+                onClick={() => setPassOnly(!passOnly)}
+                className={`px-2 py-0.5 text-[10px] rounded font-medium transition-colors ${
+                  passOnly ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-500 hover:bg-green-50'
+                }`}
+              >
+                PASS Only ({tripleCandidates.filter(c => c.verdict === "PASS").length})
+              </button>
+            </div>
           </div>
 
           {debugMode && (
