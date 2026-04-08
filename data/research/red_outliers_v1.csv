@@ -1,4 +1,4 @@
-field,ID,z_peak,Prob_gt_6,bin_z,F444W_flux,F200W_flux,F356W_flux,F150W_flux,red_1,red_2,A_pix,FWHM_pix,rank_in_bin,color_index,bin_size,hunt_type
+field,ID,z_peak,Prob_gt_6,bin_z,F444W_flux,F200W_flux,F356W_flux,F150W_flux,red_1,red_2,A_arcsec,FWHM_arcsec,rank_in_bin,color_index,bin_size,hunt_type
 GOODS-N,1001895,6.170000076293945,0.8683875203132629,6-8,231.0509,9.4642,110.4413,8.2206,1.3876,,0.0726,0.1675,1,red_1,3515,redness
 GOODS-S,203749,7.639999866485596,1.0000001192092896,6-8,149.7626,6.2699,66.3467,4.5172,1.3781,1.1670,0.0739,0.1723,2,red_1,3515,redness
 GOODS-N,1089808,6.5,0.9957369565963745,6-8,144.5836,6.1048,71.8147,8.0585,1.3744,0.9500,0.0676,0.1584,3,red_1,3515,redness

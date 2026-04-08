@@ -72,8 +72,8 @@ def hunt_brightness(ready, bin_label):
             'F444W_SNR': r['F444W_SNR'],
             'F356W_flux': r['F356W_flux'],
             'F356W_err': r['F356W_err'],
-            'A_pix': r['A_pix'],
-            'FWHM_pix': r['FWHM_pix'],
+            'A_arcsec': r['A_arcsec'],
+            'FWHM_arcsec': r['FWHM_arcsec'],
             'rank_in_bin': rank,
             'bin_size': n,
             'hunt_type': 'brightness',
@@ -148,8 +148,8 @@ def hunt_redness(ready, bin_label):
                 'F150W_flux': r['F150W_flux'],
                 'red_1': f"{r['_red1']:.4f}" if r['_red1'] is not None else '',
                 'red_2': f"{r['_red2']:.4f}" if r['_red2'] is not None else '',
-                'A_pix': r['A_pix'],
-                'FWHM_pix': r['FWHM_pix'],
+                'A_arcsec': r['A_arcsec'],
+                'FWHM_arcsec': r['FWHM_arcsec'],
                 'rank_in_bin': rank,
                 'color_index': color_name,
                 'bin_size': n,
@@ -168,7 +168,7 @@ def hunt_compactness(ready, bin_label):
     proxy_candidates = []
 
     for r in bin_rows:
-        fwhm = to_float(r['FWHM_pix'])
+        fwhm = to_float(r['FWHM_arcsec'])
         f444 = to_float(r['F444W_flux'])
 
         if fwhm and fwhm > 0:
@@ -202,9 +202,9 @@ def hunt_compactness(ready, bin_label):
                 'bin_z': bin_label,
                 'F444W_flux': r['F444W_flux'],
                 'F444W_SNR': r['F444W_SNR'],
-                'FWHM_pix': r['FWHM_pix'],
-                'A_pix': r['A_pix'],
-                'B_pix': r['B_pix'],
+                'FWHM_arcsec': r['FWHM_arcsec'],
+                'A_arcsec': r['A_arcsec'],
+                'B_arcsec': r['B_arcsec'],
                 'compact_proxy': f"{r.get('_compact_proxy', 0):.4f}" if '_compact_proxy' in r else '',
                 'rank_in_bin': rank,
                 'metric': metric_name,
@@ -271,11 +271,11 @@ def build_overlap(bright, red, compact):
                 row['red_rank'] = ''
 
             if 'compactness' in bd:
-                row['FWHM_pix'] = bd['compactness'].get('FWHM_pix', '')
+                row['FWHM_arcsec'] = bd['compactness'].get('FWHM_arcsec', '')
                 row['compact_proxy'] = bd['compactness'].get('compact_proxy', '')
                 row['compact_rank'] = bd['compactness'].get('rank_in_bin', '')
             else:
-                row['FWHM_pix'] = ''
+                row['FWHM_arcsec'] = ''
                 row['compact_proxy'] = ''
                 row['compact_rank'] = ''
 
@@ -307,7 +307,7 @@ def print_top10(candidates, hunt_name):
             if r.get('red_2'):
                 extras.append(f"red_2={r['red_2']}")
         elif hunt_name == 'compactness':
-            extras = [f"FWHM={r['FWHM_pix']}", f"proxy={r.get('compact_proxy','')}"]
+            extras = [f"FWHM={r['FWHM_arcsec']}\"", f"proxy={r.get('compact_proxy','')}"]
 
         extra_str = ', '.join(extras)
         print(f"    {count:>2}. {r['field']} ID={r['ID']:>8} z={r['z_peak']:>6} bin={r['bin_z']} P6={r['Prob_gt_6'][:5]} | {extra_str}")

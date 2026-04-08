@@ -29,6 +29,7 @@ Cosmic early universe research platform. The project catalogs astronomical data 
   - **JWST Cutouts**: 525 local PNG cutouts (60×60 px, 30 mas/px, 1.8"×1.8") from JADES DR5 mosaics (UCSC). 175 per stretch mode (asinh/sqrt/linear). Naming: `{field_tag}_{id}_{filter}.png` (asinh), `_sqrt.png`, `_linear.png`. 173/175 have real data, 2 empty (GOODS-N edge coverage). Downloaded via HTTP range requests with proper PC-matrix WCS (`scripts/download_cutouts.py`).
   - **Debug Mode UI**: Inspection page (`/inspection`) has toggleable debug mode with: SVG crosshair overlay, per-band PSF FWHM circle (red dashed), source FWHM circle (green solid), angular scale bar (0.2"), stretch toggle (asinh/sqrt/linear), metadata panel, and pipeline validation results panel.
   - **Pipeline Validation**: 3 numerical tests passed on 5 test sources: center consistency (4/5 PASS), band mapping (5/5 PASS), point-source compactness (3/3 PASS). Report: `data/research/pipeline_validation_report_v1.json`.
+  - **Phase 5.5 Bug Fix**: JADES DR5 FWHM column is in **arcsec** (not pixels). Pipeline had mislabeled it `FWHM_pix` and audit script applied double conversion (×0.03), making all values 33× too small. Fixed: columns renamed to `_arcsec`, double conversion removed. Corrected audit: 32 PASS, 3 MAYBE, 0 FAIL. Report: `data/research/phase_5_5_validation_report.json`.
 
 ## Active Research Goals
 

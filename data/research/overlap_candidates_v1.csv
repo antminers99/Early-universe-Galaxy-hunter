@@ -1,4 +1,4 @@
-field,ID,z_peak,Prob_gt_6,bin_z,num_hunts,hunt_types,in_brightness,in_redness,in_compactness,F444W_flux,F444W_SNR,bright_rank,red_1,red_2,red_rank,FWHM_pix,compact_proxy,compact_rank
+field,ID,z_peak,Prob_gt_6,bin_z,num_hunts,hunt_types,in_brightness,in_redness,in_compactness,F444W_flux,F444W_SNR,bright_rank,red_1,red_2,red_rank,FWHM_arcsec,compact_proxy,compact_rank
 GOODS-S,464514,11.489999771118164,1.0000001192092896,10-15,3,brightness+compactness+redness,1,1,1,223.0884,50.03,27,1.0422,0.6511,15,0.1686,3.8948,24
 GOODS-S,153326,11.550000190734863,1.0,10-15,3,brightness+compactness+redness,1,1,1,224.4893,93.99,26,1.3408,0.4884,18,0.1736,3.8721,26
 GOODS-S,416913,11.569999694824219,0.9994826912879944,10-15,3,brightness+compactness+redness,1,1,1,7121.1753,275.08,2,0.5876,0.7303,13,0.5138,4.4310,5

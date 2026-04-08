@@ -296,10 +296,10 @@ def main():
             row[f'{b}_flux'] = f"{feat[f'{b}_flux']:.4f}"
             row[f'{b}_err'] = f"{feat[f'{b}_err']:.4f}"
 
-        row['A_pix'] = f"{feat['A']:.4f}"
-        row['B_pix'] = f"{feat['B']:.4f}"
+        row['A_arcsec'] = f"{feat['A']:.4f}"
+        row['B_arcsec'] = f"{feat['B']:.4f}"
         row['R_KRON_U'] = f"{feat['R_KRON_U']:.4f}"
-        row['FWHM_pix'] = f"{feat['FWHM']:.4f}"
+        row['FWHM_arcsec'] = f"{feat['FWHM']:.4f}"
         row['GINI'] = f"{feat['GINI']:.4f}"
         row['clean_phot_bands'] = clean_bands
         row['size_usable'] = size_usable

@@ -88,13 +88,12 @@ def check_dropout_consistency(row, z_peak):
 
 
 def check_size_vs_psf(row):
-    fwhm_pix = to_float(row.get('FWHM_pix'))
+    fwhm_arcsec = to_float(row.get('FWHM_arcsec'))
     issues = []
-    if fwhm_pix is None or fwhm_pix <= 0:
+    if fwhm_arcsec is None or fwhm_arcsec <= 0:
         issues.append("FWHM invalid or zero")
         return issues, {'size_ok': False}
 
-    fwhm_arcsec = fwhm_pix * PIXEL_SCALE
     psf_f444w = NIRCAM_PSF_FWHM_ARCSEC['F444W']
 
     if fwhm_arcsec < psf_f444w * 0.5:
@@ -339,7 +338,7 @@ def main():
             'errors_ok': 'Y' if all_flags.get('errors_ok', False) else 'N',
             'center_ok': 'Y' if all_flags.get('center_ok', False) else 'N',
             'multi_band_ok': 'Y' if all_flags.get('multi_band_ok', False) else 'N',
-            'FWHM_arcsec': f"{(to_float(c.get('FWHM_pix', 0)) or 0) * PIXEL_SCALE:.4f}",
+            'FWHM_arcsec': f"{(to_float(c.get('FWHM_arcsec', 0)) or 0):.4f}",
             'nn_dist_arcsec': f"{nn_dist:.3f}" if nn_dist else 'N/A',
             'nn_count_1as': nn_count,
             'expected_dropouts': ','.join(dropout_bands),
@@ -352,8 +351,8 @@ def main():
             'SNR_F356W': snr_profile.get('F356W', ''),
             'SNR_F444W': snr_profile.get('F444W', ''),
             'F444W_flux': c.get('F444W_flux', ''),
-            'FWHM_pix': c.get('FWHM_pix', ''),
-            'A_pix': c.get('A_pix', ''),
+            'FWHM_arcsec_raw': c.get('FWHM_arcsec', ''),
+            'A_arcsec': c.get('A_arcsec', ''),
         })
 
     import os
@@ -410,7 +409,7 @@ def main():
         n_fail = sum(1 for r in field_rows if r['verdict'] == 'FAIL')
 
         f444_vals = [to_float(r['F444W_flux']) for r in field_rows if to_float(r['F444W_flux'])]
-        fwhm_vals = [to_float(r['FWHM_pix']) for r in field_rows if to_float(r['FWHM_pix'])]
+        fwhm_vals = [to_float(r.get('FWHM_arcsec_raw', r.get('FWHM_arcsec', ''))) for r in field_rows if to_float(r.get('FWHM_arcsec_raw', r.get('FWHM_arcsec', '')))]
         nn_vals = [to_float(r['nn_dist_arcsec']) for r in field_rows if to_float(r['nn_dist_arcsec'])]
 
         print(f"\n    {field_label}: {n} candidates")
@@ -418,7 +417,7 @@ def main():
         if f444_vals:
             print(f"      median F444W flux: {np.median(f444_vals):.1f} nJy")
         if fwhm_vals:
-            print(f"      median FWHM: {np.median(fwhm_vals)*PIXEL_SCALE:.4f}\"")
+            print(f"      median FWHM: {np.median(fwhm_vals):.4f}\"")
         if nn_vals:
             print(f"      median nearest neighbor: {np.median(nn_vals):.3f}\"")
 

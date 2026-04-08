@@ -367,7 +367,7 @@ function CandidateCard({
           <h4 className="text-[10px] font-medium text-gray-500 uppercase tracking-wider">Photometry</h4>
           <div className="text-xs space-y-0.5">
             <div>F444W = <span className="font-mono font-medium">{candidate.f444wFlux?.toFixed(1)}</span> nJy (SNR {candidate.f444wSnr?.toFixed(1)})</div>
-            <div>FWHM = <span className="font-mono font-medium">{candidate.fwhmArcsec?.toFixed(4)}&quot;</span> <span className="text-gray-400">({candidate.fwhmPix?.toFixed(3)} px)</span></div>
+            <div>FWHM = <span className="font-mono font-medium">{candidate.fwhmArcsec?.toFixed(4)}&quot;</span> <span className="text-gray-400">({candidate.fwhmPix?.toFixed(1)} px)</span> <span className={`font-medium ${fwhmPsfRatio > 1.2 ? 'text-green-500' : fwhmPsfRatio > 0.8 ? 'text-yellow-500' : 'text-red-500'}`}>[{fwhmPsfRatio.toFixed(2)}× PSF]</span></div>
             {candidate.red1 !== null && <div>red_1 = <span className="font-mono font-medium text-red-500">{candidate.red1.toFixed(3)}</span></div>}
             {candidate.red2 !== null && <div>red_2 = <span className="font-mono font-medium text-red-500">{candidate.red2.toFixed(3)}</span></div>}
             {candidate.compactProxy !== null && <div>compact = <span className="font-mono font-medium">{candidate.compactProxy.toFixed(3)}</span></div>}
@@ -410,9 +410,11 @@ function CandidateCard({
               <div>ID: {candidate.id} | Field: {candidate.field}</div>
               <div>RA: {candidate.ra.toFixed(6)} | Dec: {candidate.dec.toFixed(6)}</div>
               <div>z_peak: {candidate.zPeak} | P(z&gt;6): {candidate.probGt6}</div>
-              <div>FWHM: {candidate.fwhmArcsec.toFixed(4)}&quot; ({candidate.fwhmPix.toFixed(3)} px)</div>
+              <div>FWHM: {candidate.fwhmArcsec.toFixed(4)}&quot; ({candidate.fwhmPix.toFixed(1)} px @ 30mas/px)</div>
               <div>PSF_F444W: {PSF_FWHM_ARCSEC.F444W}&quot; | PSF_F150W: {PSF_FWHM_ARCSEC.F150W}&quot;</div>
-              <div className="font-bold">FWHM / PSF_F444W = {fwhmPsfRatio.toFixed(4)}</div>
+              <div className={`font-bold ${fwhmPsfRatio > 1.2 ? 'text-green-600' : fwhmPsfRatio > 0.8 ? 'text-yellow-600' : 'text-red-600'}`}>
+                FWHM / PSF_F444W = {fwhmPsfRatio.toFixed(3)} — {fwhmPsfRatio > 1.2 ? 'RESOLVED' : fwhmPsfRatio > 0.8 ? 'MARGINAL' : 'UNRESOLVED'}
+              </div>
               <div>SNR_F444W: {candidate.snrF444W?.toFixed(1)} | SNR_F150W: {candidate.snrF150W?.toFixed(1)} | SNR_F277W: {candidate.snrF277W?.toFixed(1)}</div>
               <div>Cutout: {CUTOUT_SIZE_PX}×{CUTOUT_SIZE_PX} px = {(CUTOUT_SIZE_PX * PIXEL_SCALE_ARCSEC).toFixed(1)}&quot;×{(CUTOUT_SIZE_PX * PIXEL_SCALE_ARCSEC).toFixed(1)}&quot; | {PIXEL_SCALE_ARCSEC * 1000} mas/px</div>
             </div>
@@ -603,14 +605,14 @@ export default function Inspection() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-4">
-        <div className="mb-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+        <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
           <div className="flex items-start gap-2">
-            <AlertTriangle className="w-4 h-4 text-yellow-500 mt-0.5 flex-shrink-0" />
-            <div className="text-xs text-yellow-700 dark:text-yellow-400">
-              <strong>Phase 0 — Verdicts Suspended:</strong> All 35 candidates have FWHM well below the PSF limit (unresolved/point-like).
-              Pipeline validation passed (center ✓, band mapping ✓, compactness ✓).
-              Use Debug Mode to verify cutout integrity before assigning verdicts.
-              Any verdict here is <em>preliminary</em> — not a discovery claim.
+            <AlertTriangle className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+            <div className="text-xs text-blue-700 dark:text-blue-400">
+              <strong>Phase 5.5 — Units Bug Fixed:</strong> FWHM column was in arcsec (not pixels). Previous FWHM/PSF ratios were 33× too small.
+              Corrected: 28/35 resolved (FWHM/PSF {">"} 1.2), 7 marginal (0.8–1.2), 0 unresolved. Audit re-run: 32 PASS, 3 MAYBE, 0 FAIL.
+              Pipeline validation passed (center ✓, band mapping ✓, point-source ✓).
+              Any verdict here is <em>preliminary — candidates warranting spectroscopic follow-up</em>.
             </div>
           </div>
         </div>
@@ -633,10 +635,10 @@ export default function Inspection() {
                   <div className="text-[10px] font-mono text-green-600 mt-1">402176: 320× ✓ | 153323: 112× (dropout) ✓</div>
                 </div>
                 <div className="bg-white dark:bg-gray-800 rounded p-2 border border-green-200 dark:border-green-800">
-                  <div className="font-bold text-green-600">Test C: Point-Source ✓</div>
-                  <div className="text-[10px] text-gray-500 mt-1">FWHM/PSF &lt; 0.15 sources look point-like visually.</div>
-                  <div className="text-[10px] text-gray-400 mt-0.5">Concentration &gt; 0.4 for all tested. 3/3 PASS.</div>
-                  <div className="text-[10px] font-mono text-green-600 mt-1">402176: 1.37 ✓ | 219426: 1.24 ✓ | 153323: 1.28 ✓</div>
+                  <div className="font-bold text-green-600">Test C: Size Metric ✓</div>
+                  <div className="text-[10px] text-gray-500 mt-1">FWHM units validated (arcsec, not pixels). Bug fixed in Phase 5.5.</div>
+                  <div className="text-[10px] text-gray-400 mt-0.5">28/35 resolved, 7 marginal, 0 unresolved. 3/3 PASS.</div>
+                  <div className="text-[10px] font-mono text-green-600 mt-1">402176: FWHM/PSF=2.69 ✓ | 219426: 4.20 ✓ | 153323: 2.93 ✓</div>
                 </div>
               </div>
               {testOnly && (

@@ -1,0 +1,57 @@
+{
+  "phase": "5.5",
+  "title": "Size Metric Validation \u2014 FWHM Units Bug Fix",
+  "date": "2026-04-08 17:18 UTC",
+  "bug_description": {
+    "problem": "JADES DR5 SIZE table FWHM column is in arcsec, but pipeline labeled it FWHM_pix and treated as pixels",
+    "impact": "Audit script multiplied by 0.03 (pixel scale) \u2192 all values 33\u00d7 too small",
+    "example": "ID 402176: FWHM=0.3904\" \u2192 was reported as 0.0117\" (FWHM/PSF=0.081, false unresolved)",
+    "corrected": "FWHM=0.3904\" \u2192 FWHM/PSF=2.692 (properly resolved)"
+  },
+  "evidence": {
+    "schema_confirmation": "JADES DR5 SIZE table column 17: FWHM, format D (float64), unit: arcsec",
+    "value_range": "0.0132\" to 1.6180\" \u2014 consistent with arcsec, not pixels",
+    "psf_comparison": "PSF F444W = 0.145\" = 4.83 px at 30mas/px. If FWHM were in pixels, all sources would be sub-pixel (impossible for SExtractor)."
+  },
+  "corrected_audit": {
+    "pass": 32,
+    "maybe": 3,
+    "fail": 0,
+    "total": 35,
+    "resolved_count": 28,
+    "marginal_count": 7,
+    "unresolved_count": 0,
+    "maybe_reasons": [
+      "153323: F090W detected at SNR=4.4 (should be dropout at z=12.1)",
+      "433690: F090W detected at SNR=45.1 (should be dropout at z=12.5)",
+      "416916: Nearest neighbor at 0.210\" \u2014 possible blending"
+    ]
+  },
+  "files_fixed": {
+    "scripts": [
+      "build_features.py",
+      "audit_triple_candidates.py",
+      "hunt_anomalies.py"
+    ],
+    "csvs": [
+      "sample_b_features_v1.csv",
+      "sample_hunt_ready_v1.csv",
+      "overlap_candidates_v1.csv",
+      "compact_outliers_v1.csv",
+      "bright_outliers_v1.csv",
+      "red_outliers_v1.csv",
+      "top_candidates_survivors_v1.csv",
+      "audit_triple_candidates_v1.csv"
+    ],
+    "ui": [
+      "candidates.ts",
+      "Inspection.tsx"
+    ],
+    "column_renames": {
+      "A_pix": "A_arcsec",
+      "B_pix": "B_arcsec",
+      "FWHM_pix": "FWHM_arcsec"
+    },
+    "new_audit_file": "audit_triple_candidates_v2.csv"
+  }
+}
