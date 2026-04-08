@@ -71,6 +71,10 @@ export default function ResearchPlan() {
             className="px-4 py-2 rounded-md text-sm font-medium bg-card text-foreground shadow-sm">
             Research Plan
           </Link>
+          <Link href="/downloads"
+            className="px-4 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            Downloads
+          </Link>
         </nav>
 
         <div className="mb-8">
